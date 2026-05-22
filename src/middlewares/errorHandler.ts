@@ -17,6 +17,7 @@ export const errorHandler = (
     statusCode = err.statusCode;
     message = err.message;
   } else if (err.name === "ValidationError") {
+    // Handles validation errors. Usually from: Joi, Mongoose, Zod, class-validator
     // Handling Joi validation errors implicitly if they throw typical validation errors
     statusCode = StatusCodes.BAD_REQUEST;
     message = err.message;
@@ -25,7 +26,6 @@ export const errorHandler = (
   res.status(statusCode).json({
     status: "error",
     statusCode,
-    message,
-    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
+    message
   });
 };
