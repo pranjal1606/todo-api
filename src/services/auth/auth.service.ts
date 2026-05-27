@@ -4,12 +4,7 @@ import crypto from "crypto";
 import { db } from "../../config/database.js";
 import { RefreshToken } from "../../entities/RefreshToken.js";
 import { User } from "../../entities/User.js";
-import {
-  findUserById,
-  findUserByEmail,
-  createUserRecord,
-  updateUserRecord,
-} from "./user.service.js";
+import { findUserById, findUserByEmail, createUserRecord, updateUserRecord, } from "./user.service.js";
 import { sendOTP } from "./email.service.js";
 import { AppError } from "../../utils/AppError.js";
 import { StatusCodes } from "http-status-codes";
@@ -37,13 +32,18 @@ export const generateJWT = (user: User) => {
   );
 };
 
+// Helper function to keep hashing logic in one place
+const hashToken = (token: string) => {
+  return crypto.createHash("sha256").update(token).digest("hex");
+};
+
 export const generateRefreshToken = async (user: User) => {
   const refreshTokenStr = crypto.randomBytes(64).toString("hex");
-  const tokenHash = crypto
-    .createHash("sha256")
-    .update(refreshTokenStr)
-    .digest("hex");
+  const tokenHash = hashToken(refreshTokenStr);
+
+  // Expiration logic is now only written once in this file!
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+
   const tokenRecord = refreshTokenRepository.create({
     user,
     token_hash: tokenHash,
@@ -54,19 +54,19 @@ export const generateRefreshToken = async (user: User) => {
 };
 
 export const rotateRefreshToken = async (oldRefreshToken: string) => {
-  const oldTokenHash = crypto
-    .createHash("sha256")
-    .update(oldRefreshToken)
-    .digest("hex");
+  const oldTokenHash = hashToken(oldRefreshToken);
+
   const record = await refreshTokenRepository.findOne({
     where: { token_hash: oldTokenHash },
     relations: { user: true },
   });
+
+  // CHECK REVOKED
   if (record && record.revoked_at) {
     const revokedTime = new Date(record.revoked_at).getTime();
     const now = Date.now();
     const gracePeriod = 30 * 1000;
-    if (now - revokedTime < gracePeriod) {
+    if ((now - revokedTime) < gracePeriod) {
       return null;
     }
     // Breach detection: Revoke all tokens for this user
@@ -79,30 +79,25 @@ export const rotateRefreshToken = async (oldRefreshToken: string) => {
     );
     return null;
   }
+
   if (!record || new Date(record.expires_at) < new Date()) {
     return null;
   }
-  // Create new token
-  const newRefreshTokenStr = crypto.randomBytes(64).toString("hex");
-  const newTokenHash = crypto
-    .createHash("sha256")
-    .update(newRefreshTokenStr)
-    .digest("hex");
-  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
   // Revoke old token
   record.revoked_at = new Date();
   await refreshTokenRepository.save(record);
-  // Insert new token
-  const newTokenRecord = refreshTokenRepository.create({
-    user: record.user,
-    token_hash: newTokenHash,
-    expires_at: expiresAt,
-  });
-  await refreshTokenRepository.save(newTokenRecord);
-  // Generate new Access Token
+
+  // Fetch fresh user data (ensures they aren't deleted)
   const user = await findUserById(record.user.id);
   if (!user) return null;
+
+  // OPTIMIZATION: Reuse the generateRefreshToken function instead of rewriting the logic!
+  const newRefreshTokenStr = await generateRefreshToken(user);
+
+  // Generate new Access Token
   const accessToken = generateJWT(user);
+
   return {
     accessToken,
     refreshToken: newRefreshTokenStr,
@@ -110,10 +105,7 @@ export const rotateRefreshToken = async (oldRefreshToken: string) => {
 };
 
 export const revokeRefreshToken = async (refreshToken: string) => {
-  const tokenHash = crypto
-    .createHash("sha256")
-    .update(refreshToken)
-    .digest("hex");
+  const tokenHash = hashToken(refreshToken);
 
   const record = await refreshTokenRepository.findOne({
     where: { token_hash: tokenHash },
@@ -124,11 +116,7 @@ export const revokeRefreshToken = async (refreshToken: string) => {
   }
 };
 
-export const registerUser = async (
-  name: string,
-  email: string,
-  password: string
-) => {
+export const registerUser = async (name: string, email: string, password: string) => {
   const existingUser = await findUserByEmail(email);
   const hashedPassword = await bcrypt.hash(password, 10);
   const otp = generateOTP();
@@ -170,11 +158,7 @@ export const verifyUserOTP = async (email: string, otp: string) => {
     throw new AppError("User is already verified", StatusCodes.BAD_REQUEST);
   }
 
-  if (
-    user.otp !== otp ||
-    !user.otpExpiresAt ||
-    new Date() > user.otpExpiresAt
-  ) {
+  if (user.otp !== otp || !user.otpExpiresAt || (new Date() > user.otpExpiresAt)) {
     throw new AppError("Invalid or expired OTP", StatusCodes.BAD_REQUEST);
   }
 
