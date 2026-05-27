@@ -6,7 +6,8 @@ export const authRateLimiter = rateLimit({
   max: 5, // Limit each client to 5 requests per `windowMs`
   message: {
     status: "fail",
-    message: "Too many login or verification attempts. Please try again after 15 minutes.",
+    message:
+      "Too many login or verification attempts. Please try again after 15 minutes.",
   },
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers

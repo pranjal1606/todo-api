@@ -2,7 +2,11 @@ import type { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 
-export const errorHandler = (err: Error | AppError, req: Request, res: Response, next: NextFunction
+export const errorHandler = (
+  err: Error | AppError,
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
   console.error("Error occurred:", err);
 
@@ -22,6 +26,6 @@ export const errorHandler = (err: Error | AppError, req: Request, res: Response,
   res.status(statusCode).json({
     status: "error",
     statusCode,
-    message
+    message,
   });
 };
