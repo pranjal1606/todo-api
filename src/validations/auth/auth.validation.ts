@@ -1,6 +1,6 @@
 import joi from "joi";
 import jpc from "joi-password-complexity";
-import { nameField } from "./common.validation.js";
+import { nameField } from "../common.validation.js";
 
 const emailField = joi.string().email().required();
 
