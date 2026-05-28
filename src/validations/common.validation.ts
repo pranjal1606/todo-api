@@ -1,3 +1,3 @@
 import joi from "joi";
 
-export const nameField = joi.string().trim();
+export const nameValidation = joi.string().trim().min(3).max(100);

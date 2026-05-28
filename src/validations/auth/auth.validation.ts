@@ -1,6 +1,6 @@
 import joi from "joi";
 import jpc from "joi-password-complexity";
-import { nameField } from "../common.validation.js";
+import { nameValidation } from "../common.validation.js";
 
 const emailField = joi.string().email().required();
 
@@ -15,7 +15,7 @@ const complexityOptions = {
 };
 
 export const regValidation = joi.object({
-  name: nameField.min(3).max(100).required(),
+  name: nameValidation.required(),
   email: emailField,
   password: (jpc as any)(complexityOptions).required(),
 });

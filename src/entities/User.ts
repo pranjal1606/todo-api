@@ -8,6 +8,7 @@ import {
   OneToMany,
 } from "typeorm";
 import { RefreshToken } from "./RefreshToken.js";
+import { Category } from "./Category.js";
 
 @Entity("users")
 export class User {
@@ -34,6 +35,9 @@ export class User {
 
   @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user)
   refreshTokens!: RefreshToken[];
+
+  @OneToMany(() => Category, (category) => category.user)
+  categories!: Category[];
 
   @CreateDateColumn()
   createdAt!: Date;
