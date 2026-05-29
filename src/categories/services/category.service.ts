@@ -1,5 +1,5 @@
 import { db } from "../../config/database.js";
-import { Category } from "../../entities/Category.js";
+import { Category } from "../entities/Category.js";
 
 const categoryRepository = db.getRepository(Category);
 
@@ -11,7 +11,10 @@ export const createCategory = async (userId: number, name: string) => {
   return await categoryRepository.save(category);
 };
 
-export const getCategoryByNameAndUser = async (name: string, userId: number) => {
+export const getCategoryByNameAndUser = async (
+  name: string,
+  userId: number
+) => {
   return await categoryRepository.findOne({
     where: { name, user: { id: userId } },
   });
@@ -24,7 +27,10 @@ export const getCategoriesByUser = async (userId: number) => {
   });
 };
 
-export const getCategoryByIdAndUser = async (categoryId: number, userId: number) => {
+export const getCategoryByIdAndUser = async (
+  categoryId: number,
+  userId: number
+) => {
   return await categoryRepository.findOne({
     where: { id: categoryId, user: { id: userId } },
   });

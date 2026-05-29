@@ -1,21 +1,29 @@
 import { Router } from "express";
-import * as categoryController from "../../controllers/category/category.controller.js";
-import { authMiddleware } from "../../middlewares/auth/auth.middleware.js";
-import { validation } from "../../middlewares/validation.middleware.js";
+import * as categoryController from "../../categories/controllers/category.controller.js";
+import { authMiddleware } from "../../auth/middlewares/auth.middleware.js";
+import { validation } from "../../commons/middlewares/validation.middleware.js";
 import {
   createCategoryValidation,
   updateCategoryValidation,
-} from "../../validations/category/category.validation.js";
+} from "../../categories/validations/category.validation.js";
 
 const router = Router();
 
 router.use(authMiddleware);
 
-router.post("/", validation(createCategoryValidation), categoryController.createCategory);
+router.post(
+  "/",
+  validation(createCategoryValidation),
+  categoryController.createCategory
+);
 
 router.get("/", categoryController.getCategories);
 
-router.put("/:id", validation(updateCategoryValidation), categoryController.updateCategory);
+router.put(
+  "/:id",
+  validation(updateCategoryValidation),
+  categoryController.updateCategory
+);
 
 router.delete("/:id", categoryController.deleteCategory);
 

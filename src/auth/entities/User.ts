@@ -8,7 +8,7 @@ import {
   OneToMany,
 } from "typeorm";
 import { RefreshToken } from "./RefreshToken.js";
-import { Category } from "./Category.js";
+import { Category } from "../../categories/entities/Category.js";
 
 @Entity("users")
 export class User {

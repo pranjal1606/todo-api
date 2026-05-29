@@ -2,11 +2,16 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { db } from "../../config/database.js";
-import { RefreshToken } from "../../entities/RefreshToken.js";
-import { User } from "../../entities/User.js";
-import { findUserById, findUserByEmail, createUserRecord, updateUserRecord, } from "./user.service.js";
-import { sendOTP } from "./email.service.js";
-import { AppError } from "../../utils/AppError.js";
+import { RefreshToken } from "../entities/RefreshToken.js";
+import { User } from "../entities/User.js";
+import {
+  findUserById,
+  findUserByEmail,
+  createUserRecord,
+  updateUserRecord,
+} from "../services/user.service.js";
+import { sendOTP } from "../services/email.service.js";
+import { AppError } from "../../commons/AppError.js";
 import { StatusCodes } from "http-status-codes";
 
 const refreshTokenRepository = db.getRepository(RefreshToken);
@@ -66,7 +71,7 @@ export const rotateRefreshToken = async (oldRefreshToken: string) => {
     const revokedTime = new Date(record.revoked_at).getTime();
     const now = Date.now();
     const gracePeriod = 30 * 1000;
-    if ((now - revokedTime) < gracePeriod) {
+    if (now - revokedTime < gracePeriod) {
       return null;
     }
     // Breach detection: Revoke all tokens for this user
@@ -116,7 +121,11 @@ export const revokeRefreshToken = async (refreshToken: string) => {
   }
 };
 
-export const registerUser = async (name: string, email: string, password: string) => {
+export const registerUser = async (
+  name: string,
+  email: string,
+  password: string
+) => {
   const existingUser = await findUserByEmail(email);
   const hashedPassword = await bcrypt.hash(password, 10);
   const otp = generateOTP();
@@ -158,7 +167,11 @@ export const verifyUserOTP = async (email: string, otp: string) => {
     throw new AppError("User is already verified", StatusCodes.BAD_REQUEST);
   }
 
-  if (user.otp !== otp || !user.otpExpiresAt || (new Date() > user.otpExpiresAt)) {
+  if (
+    user.otp !== otp ||
+    !user.otpExpiresAt ||
+    new Date() > user.otpExpiresAt
+  ) {
     throw new AppError("Invalid or expired OTP", StatusCodes.BAD_REQUEST);
   }
 

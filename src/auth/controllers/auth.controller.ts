@@ -1,13 +1,13 @@
 import type { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
-import { AppError } from "../../utils/AppError.js";
+import { AppError } from "../../commons/AppError.js";
 import {
   registerUser,
   verifyUserOTP,
   loginUser,
   rotateRefreshToken,
   revokeRefreshToken,
-} from "../../services/auth/auth.service.js";
+} from "../services/auth.service.js";
 
 export const register = async (
   req: Request,

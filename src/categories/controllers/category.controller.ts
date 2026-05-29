@@ -1,16 +1,26 @@
 import type { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
-import * as categoryService from "../../services/category/category.service.js";
-import { AppError } from "../../utils/AppError.js";
+import * as categoryService from "../services/category.service.js";
+import { AppError } from "../../commons/AppError.js";
 
-export const createCategory = async (req: Request, res: Response, next: NextFunction) => {
+export const createCategory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const userId = req.user!.id;
     const { name } = req.body;
 
-    const existingCategory = await categoryService.getCategoryByNameAndUser(name, userId);
+    const existingCategory = await categoryService.getCategoryByNameAndUser(
+      name,
+      userId
+    );
     if (existingCategory) {
-      throw new AppError("Category with this name already exists", StatusCodes.CONFLICT);
+      throw new AppError(
+        "Category with this name already exists",
+        StatusCodes.CONFLICT
+      );
     }
 
     const category = await categoryService.createCategory(userId, name);
@@ -23,7 +33,11 @@ export const createCategory = async (req: Request, res: Response, next: NextFunc
   }
 };
 
-export const getCategories = async (req: Request, res: Response, next: NextFunction) => {
+export const getCategories = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const userId = req.user!.id;
     const categories = await categoryService.getCategoriesByUser(userId);
@@ -37,7 +51,11 @@ export const getCategories = async (req: Request, res: Response, next: NextFunct
   }
 };
 
-export const updateCategory = async (req: Request, res: Response, next: NextFunction) => {
+export const updateCategory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const userId = req.user!.id;
     const categoryId = parseInt(req.params.id as string, 10);
@@ -47,19 +65,30 @@ export const updateCategory = async (req: Request, res: Response, next: NextFunc
       throw new AppError("Invalid category ID", StatusCodes.BAD_REQUEST);
     }
 
-    const category = await categoryService.getCategoryByIdAndUser(categoryId, userId);
+    const category = await categoryService.getCategoryByIdAndUser(
+      categoryId,
+      userId
+    );
     if (!category) {
       throw new AppError("Category not found", StatusCodes.NOT_FOUND);
     }
 
     if (name && name !== category.name) {
-      const existingCategory = await categoryService.getCategoryByNameAndUser(name, userId);
+      const existingCategory = await categoryService.getCategoryByNameAndUser(
+        name,
+        userId
+      );
       if (existingCategory) {
-        throw new AppError("Category with this name already exists", StatusCodes.CONFLICT);
+        throw new AppError(
+          "Category with this name already exists",
+          StatusCodes.CONFLICT
+        );
       }
     }
 
-    const updatedCategory = await categoryService.updateCategory(category, { name });
+    const updatedCategory = await categoryService.updateCategory(category, {
+      name,
+    });
 
     res.status(StatusCodes.OK).json({
       status: "success",
@@ -70,7 +99,11 @@ export const updateCategory = async (req: Request, res: Response, next: NextFunc
   }
 };
 
-export const deleteCategory = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteCategory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const userId = req.user!.id;
     const categoryId = parseInt(req.params.id as string, 10);
@@ -79,7 +112,10 @@ export const deleteCategory = async (req: Request, res: Response, next: NextFunc
       throw new AppError("Invalid category ID", StatusCodes.BAD_REQUEST);
     }
 
-    const category = await categoryService.getCategoryByIdAndUser(categoryId, userId);
+    const category = await categoryService.getCategoryByIdAndUser(
+      categoryId,
+      userId
+    );
     if (!category) {
       throw new AppError("Category not found", StatusCodes.NOT_FOUND);
     }
