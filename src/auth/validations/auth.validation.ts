@@ -15,7 +15,7 @@ const complexityOptions = {
 };
 
 export const regValidation = joi.object({
-  name: nameValidation.required(),
+  name: nameValidation,
   email: emailField,
   password: (jpc as any)(complexityOptions).required(),
 });
