@@ -3,7 +3,7 @@ import rateLimit from "express-rate-limit";
 // Limit repeated login and verify requests to prevent brute-force attacks
 export const authRateLimiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 5, // Limit each client to 5 requests per `windowMs`
+  max: 3, // Limit each client to 3 requests per `windowMs`
   message: {
     status: "fail",
     message:
