@@ -1,5 +1,5 @@
-import { db } from "../../config/database.js";
-import { Category } from "../entities/Category.js";
+import { db } from "../config/database.js";
+import { Category } from "./entities/Category.js";
 
 const categoryRepository = db.getRepository(Category);
 
@@ -38,9 +38,9 @@ export const getCategoryByIdAndUser = async (
 
 export const updateCategory = async (
   category: Category,
-  updateData: { name?: string }
+  updateData: { name: string }
 ) => {
-  if (updateData.name !== undefined) category.name = updateData.name;
+  category.name = updateData.name;
   return await categoryRepository.save(category);
 };
 

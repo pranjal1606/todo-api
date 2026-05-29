@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
-import * as categoryService from "../services/category.service.js";
-import { AppError } from "../../commons/AppError.js";
+import * as categoryService from "./category.service.js";
+import { AppError } from "../commons/AppError.js";
 
 export const createCategory = async (
   req: Request,
@@ -73,6 +73,7 @@ export const updateCategory = async (
       throw new AppError("Category not found", StatusCodes.NOT_FOUND);
     }
 
+    // check if they already have another category named as incoming name to prevent duplicates
     if (name && name !== category.name) {
       const existingCategory = await categoryService.getCategoryByNameAndUser(
         name,
