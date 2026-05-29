@@ -4,7 +4,7 @@ import { AppError } from "../AppError.js";
 
 export const validation = (schema: ObjectSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    const { error } = schema.validate(req.body, { abortEarly: false });
+    const { error, value } = schema.validate(req.body, { abortEarly: false });
 
     if (error) {
       // Map all validation error messages into a single string or array (here we use a single string)
@@ -17,6 +17,8 @@ export const validation = (schema: ObjectSchema) => {
       return next(appError);
     }
 
+    // Apply Joi's transformations (like .trim(), default values, etc) back to the request
+    req.body = value;
     next();
   };
 };
