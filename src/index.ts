@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import express from "express";
 import dotenv from "dotenv";
-import { errorHandler } from "./middlewares/errorHandler.js";
+import { errorHandler } from "./commons/middlewares/errorHandler.js";
 
 import routes from "./routes/index.js";
 

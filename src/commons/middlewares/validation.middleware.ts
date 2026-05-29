@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import type { ObjectSchema } from "joi";
-import { AppError } from "../utils/AppError.js";
+import { AppError } from "../AppError.js";
 
 export const validation = (schema: ObjectSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
