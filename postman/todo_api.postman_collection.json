@@ -8,103 +8,295 @@
   },
   "item": [
     {
-      "name": "register",
-      "request": {
-        "auth": {
-          "type": "noauth"
-        },
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"name\": \"Pranjal\",\n  \"email\": \"chandravadiyapranjal@gmail.com\",\n  \"password\": \"Pranjal@123\" \n}",
-          "options": {
-            "raw": {
-              "language": "json"
+      "name": "user",
+      "item": [
+        {
+          "name": "register",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pranjal\",\n  \"email\": \"chandravadiyapranjal@gmail.com\",\n  \"password\": \"Pranjal@123\" \n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "auth",
+                "register"
+              ]
             }
-          }
+          },
+          "response": []
         },
-        "url": {
-          "raw": "http://localhost:3000/auth/register",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3000",
-          "path": ["auth", "register"]
+        {
+          "name": "verify",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"chandravadiyapranjal@gmail.com\",\n  \"otp\": \"784918\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/verify",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "auth",
+                "verify"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"chandravadiyapranjal@gmail.com\",\n  \"password\": \"Pranjal@123\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"451fa22679282160ae6cef5cfe611839a10c3f3c7717a39dd26401aaf1369e46dc54361804775279da6ddc55cbd4723cb82666aa9c43ad5d28a1864c7fcee623\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/logout",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
         }
-      },
-      "response": []
+      ]
     },
     {
-      "name": "verify",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"email\": \"chandravadiyapranjal@gmail.com\",\n  \"otp\": \"339351\"\n}\n",
-          "options": {
-            "raw": {
-              "language": "json"
+      "name": "category",
+      "item": [
+        {
+          "name": "get all",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer Error occurred: TypeError: Cannot destructure property 'name' of 'req.body' as it is undefined.\n    at createCategory (/Users/pranjalahir/Documents/todo-api/todo-api/src/categories/controllers/category.controller.ts:13:13)\n    at Layer.handleRequest (/Users/pranjalahir/Documents/todo-api/todo-api/node_modules/router/lib/layer.js:152:17)\n    at next (/Users/pranjalahir/Documents/todo-api/todo-api/node_modules/router/lib/route.js:157:13)\n    at <anonymous> (/Users/pranjalahir/Documents/todo-api/todo-api/src/commons/middlewares/validation.middleware.ts:20:5)\n    at Layer.handleRequest (/Users/pranjalahir/Documents/todo-api/todo-api/node_modules/router/lib/layer.js:152:17)\n    at next (/Users/pranjalahir/Documents/todo-api/todo-api/node_modules/router/lib/route.js:157:13)\n    at Route.dispatch (/Users/pranjalahir/Documents/todo-api/todo-api/node_modules/router/lib/route.js:117:3)\n    at handle (/Users/pranjalahir/Documents/todo-api/todo-api/node_modules/router/index.js:435:11)\n    at Layer.handleRequest (/Users/pranjalahir/Documents/todo-api/todo-api/node_modules/router/lib/layer.js:152:17)\n    at /Users/pranjalahir/Documents/todo-api/todo-api/node_modules/router/index.js:295:15\nError occurred: TypeError: Cannot destructure property 'name' of 'req.body' as it is undefined.\n    at createCategory (/Users/pranjalahir/Documents/todo-api/todo-api/src/categories/controllers/category.controller.ts:13:13)\n    at Layer.handleRequest (/Users/pranjalahir/Documents/todo-api/todo-api/node_modules/router/lib/layer.js:152:17)\n    at next (/Users/pranjalahir/Documents/todo-api/todo-api/node_modules/router/lib/route.js:157:13)\n    at <anonymous> (/Users/pranjalahir/Documents/todo-api/todo-api/src/commons/middlewares/validation.middleware.ts:20:5)\n    at Layer.handleRequest (/Users/pranjalahir/Documents/todo-api/todo-api/node_modules/router/lib/layer.js:152:17)\n    at next (/Users/pranjalahir/Documents/todo-api/todo-api/node_modules/router/lib/route.js:157:13)\n    at Route.dispatch (/Users/pranjalahir/Documents/todo-api/todo-api/node_modules/router/lib/route.js:117:3)\n    at handle (/Users/pranjalahir/Documents/todo-api/todo-api/node_modules/router/index.js:435:11)\n    at Layer.handleRequest (/Users/pranjalahir/Documents/todo-api/todo-api/node_modules/router/lib/layer.js:152:17)\n    at /Users/pranjalahir/Documents/todo-api/todo-api/node_modules/router/index.js:295:15\n",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost:3000/categories/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "categories",
+                ""
+              ]
             }
-          }
+          },
+          "response": []
         },
-        "url": {
-          "raw": "http://localhost:3000/auth/verify",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3000",
-          "path": ["auth", "verify"]
+        {
+          "name": "create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJpYXQiOjE3ODAwMzgwMDcsImV4cCI6MTc4MDA0MTYwN30.FpAfwqJFPUB260_l7fbZdz6UL24h0tPsaJjIpQDXNAw",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \" Work   \"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/categories",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\" : \"  Urgent Work.   \"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/categories/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "categories",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJwcmFuamFsQGdtYWlsLmNvbSIsImlhdCI6MTc3MzgzMTU5MywiZXhwIjoxNzczODMyNDkzfQ.IjdrzEdl57XtAB9axrsaKw_dG8yI7gKi6ufhNm7F9jw",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/categories/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "categories",
+                "4"
+              ]
+            }
+          },
+          "response": []
         }
-      },
-      "response": []
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJpYXQiOjE3ODAwMzgwMDcsImV4cCI6MTc4MDA0MTYwN30.FpAfwqJFPUB260_l7fbZdz6UL24h0tPsaJjIpQDXNAw",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
     },
     {
-      "name": "login",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"email\": \"demo@gmail.com\",\n  \"password\": \"Pranjal@123\"\n}\n",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:3000/auth/login",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3000",
-          "path": ["auth", "login"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "logout",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"refreshToken\": \"451fa22679282160ae6cef5cfe611839a10c3f3c7717a39dd26401aaf1369e46dc54361804775279da6ddc55cbd4723cb82666aa9c43ad5d28a1864c7fcee623\"\n}\n",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:3000/auth/logout",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3000",
-          "path": ["auth", "logout"]
-        }
-      },
-      "response": []
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
     }
   ]
 }
