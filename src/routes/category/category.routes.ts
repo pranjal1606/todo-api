@@ -11,11 +11,19 @@ const router = Router();
 
 router.use(authMiddleware);
 
-router.post("/", validation(createCategoryValidation), categoryController.createCategory);
+router.post(
+  "/",
+  validation(createCategoryValidation),
+  categoryController.createCategory
+);
 
 router.get("/", categoryController.getCategories);
 
-router.put("/:id", validation(updateCategoryValidation), categoryController.updateCategory);
+router.put(
+  "/:id",
+  validation(updateCategoryValidation),
+  categoryController.updateCategory
+);
 
 router.delete("/:id", categoryController.deleteCategory);
 

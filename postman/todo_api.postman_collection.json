@@ -30,14 +30,9 @@
             "url": {
               "raw": "http://localhost:3000/auth/register",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "auth",
-                "register"
-              ]
+              "path": ["auth", "register"]
             }
           },
           "response": []
@@ -59,14 +54,9 @@
             "url": {
               "raw": "http://localhost:3000/auth/verify",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "auth",
-                "verify"
-              ]
+              "path": ["auth", "verify"]
             }
           },
           "response": []
@@ -88,14 +78,9 @@
             "url": {
               "raw": "http://localhost:3000/auth/login",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "auth",
-                "login"
-              ]
+              "path": ["auth", "login"]
             }
           },
           "response": []
@@ -117,14 +102,9 @@
             "url": {
               "raw": "http://localhost:3000/auth/logout",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "auth",
-                "logout"
-              ]
+              "path": ["auth", "logout"]
             }
           },
           "response": []
@@ -155,14 +135,9 @@
             "url": {
               "raw": "http://localhost:3000/categories/",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "categories",
-                ""
-              ]
+              "path": ["categories", ""]
             }
           },
           "response": []
@@ -190,13 +165,9 @@
             "url": {
               "raw": "http://localhost:3000/categories",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "categories"
-              ]
+              "path": ["categories"]
             }
           },
           "response": []
@@ -224,14 +195,9 @@
             "url": {
               "raw": "http://localhost:3000/categories/1",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "categories",
-                "1"
-              ]
+              "path": ["categories", "1"]
             }
           },
           "response": []
@@ -250,14 +216,9 @@
             "url": {
               "raw": "http://localhost:3000/categories/4",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "categories",
-                "4"
-              ]
+              "path": ["categories", "4"]
             }
           },
           "response": []
@@ -282,9 +243,7 @@
         "type": "text/javascript",
         "packages": {},
         "requests": {},
-        "exec": [
-          ""
-        ]
+        "exec": [""]
       }
     },
     {
@@ -293,9 +252,7 @@
         "type": "text/javascript",
         "packages": {},
         "requests": {},
-        "exec": [
-          ""
-        ]
+        "exec": [""]
       }
     }
   ]

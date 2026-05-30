@@ -12,7 +12,12 @@ import { authRateLimiter } from "../../auth/middlewares/rateLimiter.middleware.j
 
 const router = express.Router();
 
-router.post("/register", authRateLimiter, validation(regValidation), authController.register);
+router.post(
+  "/register",
+  authRateLimiter,
+  validation(regValidation),
+  authController.register
+);
 router.post("/verify", validation(verifyValidation), authController.verifyOTP);
 router.post("/login", validation(loginValidation), authController.login);
 router.post("/refresh", validation(refreshValidation), authController.refresh);
