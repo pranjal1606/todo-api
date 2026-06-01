@@ -12,27 +12,35 @@ import { StatusCodes } from "http-status-codes";
 
 const refreshTokenRepository = db.getRepository(RefreshToken);
 
+// Common variables to avoid repetitive process.env calls
+const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
+const JWT_ACCESS_EXPIRY = process.env.JWT_ACCESS_EXPIRY;
+const JWT_REFRESH_EXPIRY = process.env.JWT_REFRESH_EXPIRY;
+
+// Single initialization-time security configurations validation
+if (!JWT_ACCESS_SECRET || JWT_ACCESS_SECRET.length < 32) {
+  throw new Error("Access token secret is not securely configured");
+}
+if (!JWT_REFRESH_SECRET || JWT_REFRESH_SECRET.length < 32) {
+  throw new Error("Refresh token secret is not securely configured");
+}
+
 export const generateOTP = () => {
   return crypto.randomInt(100000, 1000000).toString(); // 6 digits
 };
 
 export const generateJWT = (user: User) => {
-  if (
-    !process.env.JWT_ACCESS_SECRET ||
-    process.env.JWT_ACCESS_SECRET.length < 32
-  ) {
-    throw new Error("Access token secret is not securely configured");
-  }
   return jwt.sign(
     {
       id: user.id,
       email: user.email,
-      accessExp: process.env.JWT_ACCESS_EXPIRY || "1h",
-      refreshExp: process.env.JWT_REFRESH_EXPIRY || "7d",
+      accessExp: JWT_ACCESS_EXPIRY,
+      refreshExp: JWT_REFRESH_EXPIRY,
     },
-    process.env.JWT_ACCESS_SECRET,
+    JWT_ACCESS_SECRET,
     {
-      expiresIn: process.env.JWT_ACCESS_EXPIRY as any,
+      expiresIn: JWT_ACCESS_EXPIRY as any,
       algorithm: "HS256",
     }
   );
@@ -45,26 +53,18 @@ const hashToken = (token: string) => {
 
 export const generateRefreshToken = async (user: User) => {
   try {
-    if (
-      !process.env.JWT_REFRESH_SECRET ||
-      process.env.JWT_REFRESH_SECRET.length < 32
-    ) {
-      throw new Error("Refresh token secret is not securely configured");
-    }
-
     // Generate signed JWT Refresh Token (no nested jti per feedback)
     const refreshTokenStr = jwt.sign(
       { id: user.id, email: user.email },
-      process.env.JWT_REFRESH_SECRET,
+      JWT_REFRESH_SECRET,
       {
-        expiresIn: (process.env.JWT_REFRESH_EXPIRY || "7d") as any,
+        expiresIn: JWT_REFRESH_EXPIRY as any,
         algorithm: "HS256",
       }
     );
 
     const refreshExpiryMs =
-      parseTime(process.env.JWT_REFRESH_EXPIRY || "7d") ||
-      7 * 24 * 60 * 60 * 1000;
+      parseTime(JWT_REFRESH_EXPIRY) || 7 * 24 * 60 * 60 * 1000;
     const expiresAt = new Date(Date.now() + refreshExpiryMs);
     const tokenHash = hashToken(refreshTokenStr); // Hash the entire JWT string
 
@@ -82,16 +82,9 @@ export const generateRefreshToken = async (user: User) => {
 
 export const rotateRefreshToken = async (oldRefreshToken: string) => {
   try {
-    if (
-      !process.env.JWT_REFRESH_SECRET ||
-      process.env.JWT_REFRESH_SECRET.length < 32
-    ) {
-      throw new Error("Refresh token secret is not securely configured");
-    }
-
     // 1. Verify the incoming JWT refresh token signature and expiration
     try {
-      jwt.verify(oldRefreshToken, process.env.JWT_REFRESH_SECRET);
+      jwt.verify(oldRefreshToken, JWT_REFRESH_SECRET);
     } catch (error) {
       return null; // Invalid or expired JWT
     }
@@ -150,16 +143,9 @@ export const rotateRefreshToken = async (oldRefreshToken: string) => {
 
 export const revokeRefreshToken = async (refreshToken: string) => {
   try {
-    if (
-      !process.env.JWT_REFRESH_SECRET ||
-      process.env.JWT_REFRESH_SECRET.length < 32
-    ) {
-      return;
-    }
-
     try {
       // Verify validity before database search
-      jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+      jwt.verify(refreshToken, JWT_REFRESH_SECRET);
 
       const tokenHash = hashToken(refreshToken);
       const record = await refreshTokenRepository.findOne({
