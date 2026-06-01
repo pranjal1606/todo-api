@@ -178,7 +178,9 @@ export const registerUser = async (
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const otp = generateOTP();
-    const otpExpiresAt = new Date(Date.now() + parseTime(process.env.OTP_EXPIRY));
+    const otpExpiresAt = new Date(
+      Date.now() + parseTime(process.env.OTP_EXPIRY)
+    );
 
     let user;
     const userPayload = {

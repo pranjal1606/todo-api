@@ -20,7 +20,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Pranjal\",\n  \"email\": \"chandravadiyapranjal@gmail.com\",\n  \"password\": \"Pranjal@123\" \n}",
+              "raw": "{\n  \"name\": \"Pranju\",\n  \"email\": \"pranjalahir69@gmail.com\",\n  \"password\": \"Pranjal@123\" \n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -105,6 +105,60 @@
               "host": ["localhost"],
               "port": "3000",
               "path": ["auth", "logout"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "refresh",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJpYXQiOjE3ODAzMTY5ODIsImV4cCI6MTc4MDkyMTc4Mn0.4Vj7f7MxJQUQACGKVfXwMKfkfV6cW8LBTGf4OCq28FA\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/refresh",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["auth", "refresh"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "profile",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/profile",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["auth", "profile"]
             }
           },
           "response": []
@@ -224,6 +278,10 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "tasks",
+      "item": []
     }
   ],
   "auth": {
@@ -231,7 +289,7 @@
     "bearer": [
       {
         "key": "token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJpYXQiOjE3ODAwMzgwMDcsImV4cCI6MTc4MDA0MTYwN30.FpAfwqJFPUB260_l7fbZdz6UL24h0tPsaJjIpQDXNAw",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJhY2Nlc3NFeHAiOiIxaCIsInJlZnJlc2hFeHAiOiI3ZCIsImlhdCI6MTc4MDMxNzg0NCwiZXhwIjoxNzgwMzIxNDQ0fQ.-4XwpWjR_m2HGFMWbc5eGAnVExzP9XWcyeAH1kzeDKY",
         "type": "string"
       }
     ]
