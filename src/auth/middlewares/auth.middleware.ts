@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../../commons/AppError.js";
-import { findUserById } from "../services/user.service.js";
+import { findUser } from "../services/user.service.js";
 
 export const authMiddleware = async (
   req: Request,
@@ -43,7 +43,7 @@ export const authMiddleware = async (
       email: string;
     };
 
-    const user = await findUserById(decoded.id);
+    const user = await findUser({ id: decoded.id });
 
     if (!user || user.deletedAt) {
       return next(

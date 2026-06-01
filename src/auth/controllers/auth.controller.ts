@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../../commons/AppError.js";
+import { sendResponse } from "../../commons/response.js";
 import {
   registerUser,
   verifyUserOTP,
@@ -8,6 +9,7 @@ import {
   rotateRefreshToken,
   revokeRefreshToken,
 } from "../services/auth.service.js";
+import { findUser } from "../services/user.service.js";
 
 export const register = async (
   req: Request,
@@ -18,15 +20,10 @@ export const register = async (
     const { name, email, password } = req.body;
     const { user, isNewUser } = await registerUser(name, email, password);
 
-    res.status(isNewUser ? StatusCodes.CREATED : StatusCodes.OK).json({
-      status: "success",
-      message:
-        "User registered successfully. Please check your email for the OTP.",
-      data: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      },
+    sendResponse(res, isNewUser ? StatusCodes.CREATED : StatusCodes.OK, {
+      message: isNewUser
+        ? "User registered successfully. Please check your email for the OTP."
+        : "OTP resent successfully. Please check your email.",
     });
   } catch (error) {
     next(error);
@@ -42,8 +39,7 @@ export const verifyOTP = async (
     const { email, otp } = req.body;
     await verifyUserOTP(email, otp);
 
-    res.status(StatusCodes.OK).json({
-      status: "success",
+    sendResponse(res, StatusCodes.OK, {
       message: "Account verified successfully. You can now log in.",
     });
   } catch (error) {
@@ -63,8 +59,7 @@ export const login = async (
       password
     );
 
-    res.status(StatusCodes.OK).json({
-      status: "success",
+    sendResponse(res, StatusCodes.OK, {
       message: "Login successful",
       data: {
         accessToken,
@@ -95,8 +90,7 @@ export const refresh = async (
       );
     }
 
-    res.status(StatusCodes.OK).json({
-      status: "success",
+    sendResponse(res, StatusCodes.OK, {
       message: "Token refreshed successfully",
       data: tokens,
     });
@@ -114,9 +108,37 @@ export const logout = async (
     const { refreshToken } = req.body;
     await revokeRefreshToken(refreshToken);
 
-    res.status(StatusCodes.OK).json({
-      status: "success",
+    sendResponse(res, StatusCodes.OK, {
       message: "Logged out successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getProfile = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new AppError("Unauthorized", StatusCodes.UNAUTHORIZED);
+    }
+
+    const user = await findUser({ id: userId });
+    if (!user || user.deletedAt) {
+      throw new AppError("User not found", StatusCodes.NOT_FOUND);
+    }
+
+    sendResponse(res, StatusCodes.OK, {
+      message: "User profile retrieved successfully",
+      data: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      },
     });
   } catch (error) {
     next(error);

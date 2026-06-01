@@ -1,6 +1,9 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import { parseTimeToMinutes } from "../../commons/time.js";
+
 dotenv.config();
+
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT),
@@ -9,17 +12,22 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SMTP_PASS,
   },
 });
+
 export const sendOTP = async (to: string, otp: string) => {
   try {
+    const otpExpiryMinutes = parseTimeToMinutes(
+      process.env.OTP_EXPIRY || "10m"
+    );
+
     const mailOptions = {
       from: '"To-Do API" <noreply@todoapi.com>',
       to,
       subject: "Your OTP Verification Code",
-      text: `Your OTP is ${otp}. It will expire in 1 minute.`,
+      text: `Your OTP is ${otp}. It will expire in ${otpExpiryMinutes} minutes.`,
       html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px; background-color: #f9f9f9;">
                 <h2 style="color: #333; text-align: center;">Welcome to To-Do API!</h2>
-                <p style="color: #555; font-size: 16px; text-align: center;">Please use the following One-Time Password (OTP) to verify your account. This code is valid for 1 minute.</p>
+                <p style="color: #555; font-size: 16px; text-align: center;">Please use the following One-Time Password (OTP) to verify your account. This code is valid for ${otpExpiryMinutes} minutes.</p>
                 <div style="background-color: #ffffff; padding: 20px; border-radius: 8px; text-align: center; margin: 20px 0; border: 2px dashed #007bff;">
                     <span style="font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #007bff;">${otp}</span>
                 </div>

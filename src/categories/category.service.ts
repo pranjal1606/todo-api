@@ -4,46 +4,70 @@ import { Category } from "./entities/Category.js";
 const categoryRepository = db.getRepository(Category);
 
 export const createCategory = async (userId: number, name: string) => {
-  const category = categoryRepository.create({
-    name,
-    user: { id: userId },
-  });
-  return await categoryRepository.save(category);
+  try {
+    const category = categoryRepository.create({
+      name,
+      user: { id: userId },
+    });
+    return await categoryRepository.save(category);
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getCategoryByNameAndUser = async (
   name: string,
   userId: number
 ) => {
-  return await categoryRepository.findOne({
-    where: { name, user: { id: userId } },
-  });
+  try {
+    return await categoryRepository.findOne({
+      where: { name, user: { id: userId } },
+    });
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getCategoriesByUser = async (userId: number) => {
-  return await categoryRepository.find({
-    where: { user: { id: userId } },
-    order: { createdAt: "DESC" },
-  });
+  try {
+    return await categoryRepository.find({
+      where: { user: { id: userId } },
+      order: { createdAt: "DESC" },
+    });
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getCategoryByIdAndUser = async (
   categoryId: number,
   userId: number
 ) => {
-  return await categoryRepository.findOne({
-    where: { id: categoryId, user: { id: userId } },
-  });
+  try {
+    return await categoryRepository.findOne({
+      where: { id: categoryId, user: { id: userId } },
+    });
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const updateCategory = async (
   category: Category,
   updateData: { name: string }
 ) => {
-  category.name = updateData.name;
-  return await categoryRepository.save(category);
+  try {
+    category.name = updateData.name;
+    return await categoryRepository.save(category);
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const deleteCategory = async (categoryId: number) => {
-  await categoryRepository.softDelete(categoryId);
+  try {
+    await categoryRepository.softDelete(categoryId);
+  } catch (error) {
+    throw error;
+  }
 };

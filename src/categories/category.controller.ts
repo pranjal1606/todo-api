@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as categoryService from "./category.service.js";
 import { AppError } from "../commons/AppError.js";
+import { sendResponse } from "../commons/response.js";
 
 export const createCategory = async (
   req: Request,
@@ -24,8 +25,7 @@ export const createCategory = async (
     }
 
     const category = await categoryService.createCategory(userId, name);
-    res.status(StatusCodes.CREATED).json({
-      status: "success",
+    sendResponse(res, StatusCodes.CREATED, {
       data: category,
     });
   } catch (error) {
@@ -42,8 +42,7 @@ export const getCategories = async (
     const userId = req.user!.id;
     const categories = await categoryService.getCategoriesByUser(userId);
 
-    res.status(StatusCodes.OK).json({
-      status: "success",
+    sendResponse(res, StatusCodes.OK, {
       data: categories,
     });
   } catch (error) {
@@ -91,8 +90,7 @@ export const updateCategory = async (
       name,
     });
 
-    res.status(StatusCodes.OK).json({
-      status: "success",
+    sendResponse(res, StatusCodes.OK, {
       data: updatedCategory,
     });
   } catch (error) {
@@ -123,8 +121,7 @@ export const deleteCategory = async (
 
     await categoryService.deleteCategory(category.id);
 
-    res.status(StatusCodes.OK).json({
-      status: "success",
+    sendResponse(res, StatusCodes.OK, {
       message: "Category deleted successfully",
     });
   } catch (error) {
