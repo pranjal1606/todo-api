@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-import { parseTimeToMinutes } from "../../commons/time.js";
+import { parseTimeToMinutes } from "../../../commons/time.js";
 
 dotenv.config();
 

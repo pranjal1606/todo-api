@@ -1,6 +1,6 @@
 import rateLimit from "express-rate-limit";
 import { RedisStore } from "rate-limit-redis";
-import { redisClient } from "../../config/redis.js";
+import { redisClient } from "../../../config/redis.js";
 
 // Limit repeated login and verify requests to prevent brute-force attacks
 export const authRateLimiter = rateLimit({

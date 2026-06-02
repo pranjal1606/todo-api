@@ -1,15 +1,15 @@
 import express from "express";
-import * as authController from "../../auth/controllers/auth.controller.js";
-import { authMiddleware } from "../../auth/middlewares/auth.middleware.js";
+import * as authController from "../../modules/auth/controllers/auth.controller.js";
+import { authMiddleware } from "../../modules/auth/middlewares/auth.middleware.js";
 import { validation } from "../../commons/middlewares/validation.middleware.js";
 import {
   regValidation,
   loginValidation,
   refreshValidation,
   verifyValidation,
-} from "../../auth/validations/auth.validation.js";
+} from "../../modules/auth/validations/auth.validation.js";
 
-import { authRateLimiter } from "../../auth/middlewares/rateLimiter.middleware.js";
+import { authRateLimiter } from "../../modules/auth/middlewares/rateLimiter.middleware.js";
 
 const router = express.Router();
 

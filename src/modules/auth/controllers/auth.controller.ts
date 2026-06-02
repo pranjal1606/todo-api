@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
-import { AppError } from "../../commons/AppError.js";
-import { sendResponse } from "../../commons/response.js";
+import { AppError } from "../../../commons/AppError.js";
+import { sendResponse } from "../../../commons/response.js";
 import {
   registerUser,
   verifyUserOTP,

@@ -1,4 +1,4 @@
-import { db } from "../config/database.js";
+import { db } from "../../config/database.js";
 import { Category } from "./entities/Category.js";
 
 const categoryRepository = db.getRepository(Category);

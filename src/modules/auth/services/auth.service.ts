@@ -1,13 +1,13 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import { db } from "../../config/database.js";
+import { db } from "../../../config/database.js";
 import { RefreshToken } from "../entities/RefreshToken.js";
 import { User } from "../entities/User.js";
 import { findUser, saveUserRecord } from "../services/user.service.js";
 import { sendOTP } from "../services/email.service.js";
-import { AppError } from "../../commons/AppError.js";
-import { parseTime } from "../../commons/time.js";
+import { AppError } from "../../../commons/AppError.js";
+import { parseTime } from "../../../commons/time.js";
 import { StatusCodes } from "http-status-codes";
 
 const refreshTokenRepository = db.getRepository(RefreshToken);

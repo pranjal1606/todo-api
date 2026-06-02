@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as categoryService from "./category.service.js";
-import { AppError } from "../commons/AppError.js";
-import { sendResponse } from "../commons/response.js";
+import { AppError } from "../../commons/AppError.js";
+import { sendResponse } from "../../commons/response.js";
 
 export const createCategory = async (
   req: Request,

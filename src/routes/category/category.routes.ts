@@ -1,11 +1,11 @@
 import { Router } from "express";
-import * as categoryController from "../../categories/category.controller.js";
-import { authMiddleware } from "../../auth/middlewares/auth.middleware.js";
+import * as categoryController from "../../modules/categories/category.controller.js";
+import { authMiddleware } from "../../modules/auth/middlewares/auth.middleware.js";
 import { validation } from "../../commons/middlewares/validation.middleware.js";
 import {
   createCategoryValidation,
   updateCategoryValidation,
-} from "../../categories/validations/category.validation.js";
+} from "../../modules/categories/validations/category.validation.js";
 
 const router = Router();
 

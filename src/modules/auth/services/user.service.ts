@@ -1,5 +1,5 @@
-import { db } from "../../config/database.js";
-import { User } from "../../auth/entities/User.js";
+import { db } from "../../../config/database.js";
+import { User } from "../entities/User.js";
 
 const userRepository = db.getRepository(User);
 

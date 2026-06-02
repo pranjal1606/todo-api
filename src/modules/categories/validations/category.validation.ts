@@ -1,5 +1,5 @@
 import joi from "joi";
-import { nameValidation } from "../../commons/validations/common.validation.js";
+import { nameValidation } from "../../../commons/validations/common.validation.js";
 
 export const createCategoryValidation = joi.object({
   name: nameValidation,
