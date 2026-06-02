@@ -5,11 +5,10 @@ const categoryRepository = db.getRepository(Category);
 
 export const createCategory = async (userId: number, name: string) => {
   try {
-    const category = categoryRepository.create({
+    return await categoryRepository.save({
       name,
       user: { id: userId },
     });
-    return await categoryRepository.save(category);
   } catch (error) {
     throw error;
   }

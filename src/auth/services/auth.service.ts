@@ -63,17 +63,16 @@ export const generateRefreshToken = async (user: User) => {
       }
     );
 
-    const refreshExpiryMs =
-      parseTime(JWT_REFRESH_EXPIRY) || 7 * 24 * 60 * 60 * 1000;
+    const refreshExpiryMs = parseTime(JWT_REFRESH_EXPIRY);
     const expiresAt = new Date(Date.now() + refreshExpiryMs);
     const tokenHash = hashToken(refreshTokenStr); // Hash the entire JWT string
 
-    const tokenRecord = refreshTokenRepository.create({
+    await refreshTokenRepository.save({
       user,
       token_hash: tokenHash,
       expires_at: expiresAt,
     });
-    await refreshTokenRepository.save(tokenRecord);
+
     return refreshTokenStr;
   } catch (error) {
     throw error;
@@ -143,21 +142,17 @@ export const rotateRefreshToken = async (oldRefreshToken: string) => {
 
 export const revokeRefreshToken = async (refreshToken: string) => {
   try {
-    try {
-      // Verify validity before database search
-      jwt.verify(refreshToken, JWT_REFRESH_SECRET);
+    // Verify validity before database search
+    jwt.verify(refreshToken, JWT_REFRESH_SECRET);
 
-      const tokenHash = hashToken(refreshToken);
-      const record = await refreshTokenRepository.findOne({
-        where: { token_hash: tokenHash },
-      });
+    const tokenHash = hashToken(refreshToken);
+    const record = await refreshTokenRepository.findOne({
+      where: { token_hash: tokenHash },
+    });
 
-      if (record && !record.revoked_at) {
-        record.revoked_at = new Date();
-        await refreshTokenRepository.save(record);
-      }
-    } catch (error) {
-      // If verification fails, ignore
+    if (record && !record.revoked_at) {
+      record.revoked_at = new Date();
+      await refreshTokenRepository.save(record);
     }
   } catch (error) {
     throw error;
@@ -211,12 +206,11 @@ export const registerUser = async (
 export const verifyUserOTP = async (email: string, otp: string) => {
   try {
     const user = await findUser({ email });
-    if (!user) {
-      throw new AppError("User not found", StatusCodes.NOT_FOUND);
-    }
-
-    if (user.isVerified) {
-      throw new AppError("User is already verified", StatusCodes.BAD_REQUEST);
+    if (!user || user.isVerified) {
+      throw new AppError(
+        "User not found or already verified",
+        StatusCodes.NOT_FOUND
+      );
     }
 
     if (

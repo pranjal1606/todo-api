@@ -5,7 +5,7 @@ dotenv.config();
 
 // Initialize Redis client using environment URL or local fallback
 export const redisClient = createClient({
-  url: process.env.REDIS_URL || "redis://localhost:6379",
+  url: process.env.REDIS_URL as string,
 });
 
 redisClient.on("error", (err) => {

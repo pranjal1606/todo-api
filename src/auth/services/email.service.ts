@@ -4,6 +4,8 @@ import { parseTimeToMinutes } from "../../commons/time.js";
 
 dotenv.config();
 
+const otpExpiryMinutes = parseTimeToMinutes(process.env.OTP_EXPIRY);
+
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT),
@@ -15,10 +17,6 @@ const transporter = nodemailer.createTransport({
 
 export const sendOTP = async (to: string, otp: string) => {
   try {
-    const otpExpiryMinutes = parseTimeToMinutes(
-      process.env.OTP_EXPIRY || "10m"
-    );
-
     const mailOptions = {
       from: '"To-Do API" <noreply@todoapi.com>',
       to,
