@@ -1,9 +1,8 @@
 import joi from "joi";
 
-// Checklist item
-const checklistItemSchema = joi.object({
+// Checklist item schema during creation (no isCompleted parameter allowed)
+const createChecklistItemSchema = joi.object({
   title: joi.string().trim().min(1).max(255).required(),
-  isCompleted: joi.boolean().default(false),
 });
 
 // Shared base task validation properties
@@ -25,20 +24,39 @@ export const createTaskValidation = joi.object({
   categoryId: commonTaskFields.categoryId.required(),
   status: commonTaskFields.status.default("PENDING"),
   priority: commonTaskFields.priority.default("MEDIUM"),
-  checklistItems: joi.array().items(checklistItemSchema).optional(),
+  checklistItems: joi.array().items(createChecklistItemSchema).optional(), // Optional, no isCompleted allowed
 });
 
-// Updating a task
+// Updating a task (nothing empty allowed except description)
 export const updateTaskValidation = joi.object({
   ...commonTaskFields,
   checklistItems: joi
     .array()
     .items(
       joi.object({
-        id: joi.number().integer().positive(),
+        id: joi.number().integer().positive(), // ID to target existing checklist items
         title: joi.string().trim().min(1).max(255).required(),
         isCompleted: joi.boolean().required(),
       })
     )
     .optional(),
+});
+
+// Listing/Querying tasks validation schema
+export const getTasksValidation = joi.object({
+  page: joi.number().integer().min(1).optional(),
+  limit: joi.number().integer().min(1).max(50).optional(),
+  status: joi
+    .string()
+    .valid("PENDING", "IN_PROGRESS", "COMPLETED", "all")
+    .optional(),
+  priority: joi.string().valid("LOW", "MEDIUM", "HIGH", "all").optional(),
+  dueDate: joi.string().isoDate().optional(),
+  hasDueDate: joi.boolean().optional(),
+  search: joi.string().trim().allow("").optional(),
+  sortBy: joi
+    .string()
+    .valid("dueDate", "createdAt", "priority", "status")
+    .optional(),
+  order: joi.string().valid("ASC", "DESC").optional(),
 });
