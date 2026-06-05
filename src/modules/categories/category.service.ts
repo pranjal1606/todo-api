@@ -1,5 +1,6 @@
 import { db } from "../../config/database.js";
 import { Category } from "./entities/Category.js";
+import { Task } from "../tasks/entities/Task.js";
 
 const categoryRepository = db.getRepository(Category);
 
@@ -58,6 +59,18 @@ export const updateCategory = async (
   try {
     category.name = updateData.name;
     return await categoryRepository.save(category);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const isCategoryInUse = async (categoryId: number): Promise<boolean> => {
+  try {
+    const taskRepository = db.getRepository(Task);
+    const count = await taskRepository.count({
+      where: { category: { id: categoryId } },
+    });
+    return count > 0;
   } catch (error) {
     throw error;
   }

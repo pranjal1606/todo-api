@@ -108,7 +108,7 @@ export const getTasksPaginated = async (
       .leftJoinAndSelect("task.category", "category")
       .leftJoinAndSelect("task.checklistItems", "checklistItem")
       .leftJoinAndSelect("task.attachments", "attachment")
-      .where("task.user.id = :userId", { userId });
+      .where("task.user = :userId", { userId });
 
     // Filter by Status
     if (status && status !== "all") {
@@ -131,7 +131,8 @@ export const getTasksPaginated = async (
         endOfDay,
       });
     } else if (hasDueDate !== undefined) {
-      if (hasDueDate) {
+      const hasDueDateBool = hasDueDate === true || hasDueDate === "true";
+      if (hasDueDateBool) {
         query.andWhere("task.dueDate IS NOT NULL");
       } else {
         query.andWhere("task.dueDate IS NULL");
@@ -159,23 +160,25 @@ export const getTasksPaginated = async (
     // Sorting
     const orderDirection = order || "DESC";
     if (sortBy === "priority") {
-      query.orderBy(
+      query.addSelect(
         `CASE task.priority 
           WHEN 'HIGH' THEN 1 
           WHEN 'MEDIUM' THEN 2 
           WHEN 'LOW' THEN 3 
         END`,
-        orderDirection
+        "task_priority_order"
       );
+      query.orderBy("task_priority_order", orderDirection);
     } else if (sortBy === "status") {
-      query.orderBy(
+      query.addSelect(
         `CASE task.status 
           WHEN 'PENDING' THEN 1 
           WHEN 'IN_PROGRESS' THEN 2 
           WHEN 'COMPLETED' THEN 3 
         END`,
-        orderDirection
+        "task_status_order"
       );
+      query.orderBy("task_status_order", orderDirection);
     } else if (sortBy === "dueDate") {
       query.orderBy("task.dueDate", orderDirection, "NULLS LAST");
     } else {

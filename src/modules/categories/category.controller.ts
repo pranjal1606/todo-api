@@ -119,6 +119,14 @@ export const deleteCategory = async (
       throw new AppError("Category not found", StatusCodes.NOT_FOUND);
     }
 
+    const inUse = await categoryService.isCategoryInUse(category.id);
+    if (inUse) {
+      throw new AppError(
+        "Cannot delete category as it is currently in use by one or more tasks",
+        StatusCodes.CONFLICT
+      );
+    }
+
     await categoryService.deleteCategory(category.id);
 
     sendResponse(res, StatusCodes.OK, {

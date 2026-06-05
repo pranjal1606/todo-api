@@ -56,7 +56,10 @@ export class Task {
   @JoinColumn({ name: "category_id" })
   category!: Category | null;
 
-  @OneToMany(() => ChecklistItem, (item) => item.task, { cascade: true })
+  @OneToMany(() => ChecklistItem, (item) => item.task, {
+    cascade: true,
+    orphanRemoval: true,
+  })
   checklistItems!: ChecklistItem[];
 
   @OneToMany(() => Attachment, (attachment) => attachment.task, {

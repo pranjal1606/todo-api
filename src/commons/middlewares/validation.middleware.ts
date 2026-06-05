@@ -7,7 +7,8 @@ export const validation = (
   target: "body" | "query" = "body"
 ) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    const { error, value } = schema.validate(req[target], {
+    const dataToValidate = req[target] || {};
+    const { error, value } = schema.validate(dataToValidate, {
       abortEarly: false,
     });
 
@@ -23,7 +24,14 @@ export const validation = (
     }
 
     // Apply Joi's transformations (like .trim(), default values, etc) back to the request
-    req[target] = value;
+    if (target === "query") {
+      for (const key of Object.keys(req.query || {})) {
+        delete req.query[key];
+      }
+      Object.assign(req.query || {}, value || {});
+    } else {
+      req[target] = value;
+    }
     next();
   };
 };
