@@ -58,7 +58,6 @@ export class Task {
 
   @OneToMany(() => ChecklistItem, (item) => item.task, {
     cascade: true,
-    orphanRemoval: true,
   })
   checklistItems!: ChecklistItem[];
 

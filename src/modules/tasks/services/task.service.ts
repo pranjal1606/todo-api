@@ -1,5 +1,6 @@
 import { db } from "../../../config/database.js";
 import { Task } from "../entities/Task.js";
+import { ChecklistItem } from "../entities/ChecklistItem.js";
 import { Brackets } from "typeorm";
 import { findUser } from "../../auth/services/user.service.js";
 import { getCategoryByIdAndUser } from "../../categories/category.service.js";
@@ -131,7 +132,7 @@ export const getTasksPaginated = async (
         endOfDay,
       });
     } else if (hasDueDate !== undefined) {
-      const hasDueDateBool = hasDueDate === true || hasDueDate === "true";
+      const hasDueDateBool = String(hasDueDate) === "true";
       if (hasDueDateBool) {
         query.andWhere("task.dueDate IS NOT NULL");
       } else {
@@ -270,6 +271,15 @@ export const updateTask = async (
             400
           );
         }
+      }
+
+      // Explicitly delete orphaned checklist items not present in the update payload
+      const incomingIds = checklistItems
+        .map((item) => item.id)
+        .filter((id): id is number => !!id);
+      const orphanIds = existingIds.filter((id) => !incomingIds.includes(id));
+      if (orphanIds.length > 0) {
+        await db.getRepository(ChecklistItem).delete(orphanIds);
       }
 
       task.checklistItems = checklistItems.map((item) => {
