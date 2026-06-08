@@ -127,6 +127,9 @@ export const uploadAttachment = async (
     const taskId = parseInt(req.params.id as string, 10);
 
     if (isNaN(taskId)) {
+      if (req.file && fs.existsSync(req.file.path)) {
+        fs.unlinkSync(req.file.path);
+      }
       throw new AppError("Invalid task ID", StatusCodes.BAD_REQUEST);
     }
 
@@ -136,6 +139,9 @@ export const uploadAttachment = async (
 
     const task = await taskService.getTaskByIdAndUser(taskId, userId);
     if (!task) {
+      if (fs.existsSync(req.file.path)) {
+        fs.unlinkSync(req.file.path);
+      }
       throw new AppError("Task not found", StatusCodes.NOT_FOUND);
     }
 
@@ -154,6 +160,13 @@ export const uploadAttachment = async (
       data: updatedTask,
     });
   } catch (error) {
+    if (req.file && fs.existsSync(req.file.path)) {
+      try {
+        fs.unlinkSync(req.file.path);
+      } catch (err) {
+        // ignore errors
+      }
+    }
     next(error);
   }
 };
@@ -198,6 +211,40 @@ export const deleteAttachment = async (
     sendResponse(res, StatusCodes.OK, {
       data: updatedTask,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const downloadAttachment = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user!.id;
+    const taskId = parseInt(req.params.taskId as string, 10);
+    const attachmentId = parseInt(req.params.attachmentId as string, 10);
+
+    if (isNaN(taskId) || isNaN(attachmentId)) {
+      throw new AppError("Invalid IDs", StatusCodes.BAD_REQUEST);
+    }
+
+    const task = await taskService.getTaskByIdAndUser(taskId, userId);
+    if (!task) {
+      throw new AppError("Task not found", StatusCodes.NOT_FOUND);
+    }
+
+    const attachmentRepository = db.getRepository(Attachment);
+    const attachment = await attachmentRepository.findOne({
+      where: { id: attachmentId, task: { id: taskId } },
+    });
+
+    if (!attachment || !fs.existsSync(attachment.path)) {
+      throw new AppError("Attachment not found", StatusCodes.NOT_FOUND);
+    }
+
+    res.sendFile(attachment.path);
   } catch (error) {
     next(error);
   }

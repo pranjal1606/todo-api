@@ -30,9 +30,14 @@
             "url": {
               "raw": "http://localhost:3000/auth/register",
               "protocol": "http",
-              "host": ["localhost"],
+              "host": [
+                "localhost"
+              ],
               "port": "3000",
-              "path": ["auth", "register"]
+              "path": [
+                "auth",
+                "register"
+              ]
             }
           },
           "response": []
@@ -54,9 +59,14 @@
             "url": {
               "raw": "http://localhost:3000/auth/verify",
               "protocol": "http",
-              "host": ["localhost"],
+              "host": [
+                "localhost"
+              ],
               "port": "3000",
-              "path": ["auth", "verify"]
+              "path": [
+                "auth",
+                "verify"
+              ]
             }
           },
           "response": []
@@ -78,9 +88,14 @@
             "url": {
               "raw": "http://localhost:3000/auth/login",
               "protocol": "http",
-              "host": ["localhost"],
+              "host": [
+                "localhost"
+              ],
               "port": "3000",
-              "path": ["auth", "login"]
+              "path": [
+                "auth",
+                "login"
+              ]
             }
           },
           "response": []
@@ -102,9 +117,14 @@
             "url": {
               "raw": "http://localhost:3000/auth/logout",
               "protocol": "http",
-              "host": ["localhost"],
+              "host": [
+                "localhost"
+              ],
               "port": "3000",
-              "path": ["auth", "logout"]
+              "path": [
+                "auth",
+                "logout"
+              ]
             }
           },
           "response": []
@@ -129,9 +149,14 @@
             "url": {
               "raw": "http://localhost:3000/auth/refresh",
               "protocol": "http",
-              "host": ["localhost"],
+              "host": [
+                "localhost"
+              ],
               "port": "3000",
-              "path": ["auth", "refresh"]
+              "path": [
+                "auth",
+                "refresh"
+              ]
             }
           },
           "response": []
@@ -156,9 +181,14 @@
             "url": {
               "raw": "http://localhost:3000/auth/profile",
               "protocol": "http",
-              "host": ["localhost"],
+              "host": [
+                "localhost"
+              ],
               "port": "3000",
-              "path": ["auth", "profile"]
+              "path": [
+                "auth",
+                "profile"
+              ]
             }
           },
           "response": []
@@ -189,9 +219,14 @@
             "url": {
               "raw": "http://localhost:3000/categories/",
               "protocol": "http",
-              "host": ["localhost"],
+              "host": [
+                "localhost"
+              ],
               "port": "3000",
-              "path": ["categories", ""]
+              "path": [
+                "categories",
+                ""
+              ]
             }
           },
           "response": []
@@ -219,9 +254,13 @@
             "url": {
               "raw": "http://localhost:3000/categories",
               "protocol": "http",
-              "host": ["localhost"],
+              "host": [
+                "localhost"
+              ],
               "port": "3000",
-              "path": ["categories"]
+              "path": [
+                "categories"
+              ]
             }
           },
           "response": []
@@ -249,9 +288,14 @@
             "url": {
               "raw": "http://localhost:3000/categories/1",
               "protocol": "http",
-              "host": ["localhost"],
+              "host": [
+                "localhost"
+              ],
               "port": "3000",
-              "path": ["categories", "1"]
+              "path": [
+                "categories",
+                "1"
+              ]
             }
           },
           "response": []
@@ -270,9 +314,14 @@
             "url": {
               "raw": "http://localhost:3000/categories/1",
               "protocol": "http",
-              "host": ["localhost"],
+              "host": [
+                "localhost"
+              ],
               "port": "3000",
-              "path": ["categories", "1"]
+              "path": [
+                "categories",
+                "1"
+              ]
             }
           },
           "response": []
@@ -293,9 +342,14 @@
                 "url": {
                   "raw": "http://localhost:3000/tasks/2",
                   "protocol": "http",
-                  "host": ["localhost"],
+                  "host": [
+                    "localhost"
+                  ],
                   "port": "3000",
-                  "path": ["tasks", "2"]
+                  "path": [
+                    "tasks",
+                    "2"
+                  ]
                 }
               },
               "response": []
@@ -308,9 +362,13 @@
                 "url": {
                   "raw": "http://localhost:3000/tasks?priority=HIGH",
                   "protocol": "http",
-                  "host": ["localhost"],
+                  "host": [
+                    "localhost"
+                  ],
                   "port": "3000",
-                  "path": ["tasks"],
+                  "path": [
+                    "tasks"
+                  ],
                   "query": [
                     {
                       "key": "priority",
@@ -329,9 +387,13 @@
                 "url": {
                   "raw": "http://localhost:3000/tasks?dueDate=2026-06-10",
                   "protocol": "http",
-                  "host": ["localhost"],
+                  "host": [
+                    "localhost"
+                  ],
                   "port": "3000",
-                  "path": ["tasks"],
+                  "path": [
+                    "tasks"
+                  ],
                   "query": [
                     {
                       "key": "dueDate",
@@ -350,9 +412,13 @@
                 "url": {
                   "raw": "http://localhost:3000/tasks?hasDueDate=true",
                   "protocol": "http",
-                  "host": ["localhost"],
+                  "host": [
+                    "localhost"
+                  ],
                   "port": "3000",
-                  "path": ["tasks"],
+                  "path": [
+                    "tasks"
+                  ],
                   "query": [
                     {
                       "key": "hasDueDate",
@@ -371,9 +437,13 @@
                 "url": {
                   "raw": "http://localhost:3000/tasks?search=work",
                   "protocol": "http",
-                  "host": ["localhost"],
+                  "host": [
+                    "localhost"
+                  ],
                   "port": "3000",
-                  "path": ["tasks"],
+                  "path": [
+                    "tasks"
+                  ],
                   "query": [
                     {
                       "key": "search",
@@ -392,9 +462,13 @@
                 "url": {
                   "raw": "http://localhost:3000/tasks?sortBy=status&order=ASC",
                   "protocol": "http",
-                  "host": ["localhost"],
+                  "host": [
+                    "localhost"
+                  ],
                   "port": "3000",
-                  "path": ["tasks"],
+                  "path": [
+                    "tasks"
+                  ],
                   "query": [
                     {
                       "key": "sortBy",
@@ -417,9 +491,13 @@
                 "url": {
                   "raw": "http://localhost:3000/tasks?limit=2&page=1",
                   "protocol": "http",
-                  "host": ["localhost"],
+                  "host": [
+                    "localhost"
+                  ],
                   "port": "3000",
-                  "path": ["tasks"],
+                  "path": [
+                    "tasks"
+                  ],
                   "query": [
                     {
                       "key": "limit",
@@ -442,9 +520,13 @@
                 "url": {
                   "raw": "http://localhost:3000/tasks?hasDueDate=false",
                   "protocol": "http",
-                  "host": ["localhost"],
+                  "host": [
+                    "localhost"
+                  ],
                   "port": "3000",
-                  "path": ["tasks"],
+                  "path": [
+                    "tasks"
+                  ],
                   "query": [
                     {
                       "key": "hasDueDate",
@@ -463,9 +545,13 @@
                 "url": {
                   "raw": "http://localhost:3000/tasks?sortBy=priority",
                   "protocol": "http",
-                  "host": ["localhost"],
+                  "host": [
+                    "localhost"
+                  ],
                   "port": "3000",
-                  "path": ["tasks"],
+                  "path": [
+                    "tasks"
+                  ],
                   "query": [
                     {
                       "key": "sortBy",
@@ -484,9 +570,13 @@
                 "url": {
                   "raw": "http://localhost:3000/tasks?sortBy=dueDate",
                   "protocol": "http",
-                  "host": ["localhost"],
+                  "host": [
+                    "localhost"
+                  ],
                   "port": "3000",
-                  "path": ["tasks"],
+                  "path": [
+                    "tasks"
+                  ],
                   "query": [
                     {
                       "key": "sortBy",
@@ -522,9 +612,13 @@
             "url": {
               "raw": "http://localhost:3000/tasks",
               "protocol": "http",
-              "host": ["localhost"],
+              "host": [
+                "localhost"
+              ],
               "port": "3000",
-              "path": ["tasks"]
+              "path": [
+                "tasks"
+              ]
             }
           },
           "response": []
@@ -564,9 +658,13 @@
             "url": {
               "raw": "http://localhost:3000/tasks",
               "protocol": "http",
-              "host": ["localhost"],
+              "host": [
+                "localhost"
+              ],
               "port": "3000",
-              "path": ["tasks"]
+              "path": [
+                "tasks"
+              ]
             }
           },
           "response": []
@@ -589,9 +687,14 @@
             "url": {
               "raw": "http://localhost:3000/tasks/2",
               "protocol": "http",
-              "host": ["localhost"],
+              "host": [
+                "localhost"
+              ],
               "port": "3000",
-              "path": ["tasks", "2"]
+              "path": [
+                "tasks",
+                "2"
+              ]
             }
           },
           "response": []
@@ -604,9 +707,95 @@
             "url": {
               "raw": "http://localhost:3000/tasks/1",
               "protocol": "http",
-              "host": ["localhost"],
+              "host": [
+                "localhost"
+              ],
               "port": "3000",
-              "path": ["tasks", "1"]
+              "path": [
+                "tasks",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "attachments",
+      "item": [
+        {
+          "name": "upload file",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "d7a2d55e-eca8-4d7a-b470-a255d085e98e",
+                  "value": null
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:3000/tasks/2/attachments",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "tasks",
+                "2",
+                "attachments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get file",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/tasks/2/attachments/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "tasks",
+                "2",
+                "attachments",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete file",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/tasks/2/attachments/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "tasks",
+                "2",
+                "attachments",
+                "1"
+              ]
             }
           },
           "response": []
@@ -619,7 +808,7 @@
     "bearer": [
       {
         "key": "token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJhY2Nlc3NFeHAiOiIxaCIsInJlZnJlc2hFeHAiOiI3ZCIsImlhdCI6MTc4MDY2NDEwMiwiZXhwIjoxNzgwNjY3NzAyfQ.ewDnUMnb9T4JThiTZJd8RiXTXHSfCriHqCXYVuqUxQU",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJhY2Nlc3NFeHAiOiIxaCIsInJlZnJlc2hFeHAiOiI3ZCIsImlhdCI6MTc4MDkxMzc4NiwiZXhwIjoxNzgwOTE3Mzg2fQ.gMdV_4i1Ha7pUBNB7RF06srLCJX5s_qXD5MANTgtoZg",
         "type": "string"
       }
     ]
@@ -631,7 +820,9 @@
         "type": "text/javascript",
         "packages": {},
         "requests": {},
-        "exec": [""]
+        "exec": [
+          ""
+        ]
       }
     },
     {
@@ -640,7 +831,9 @@
         "type": "text/javascript",
         "packages": {},
         "requests": {},
-        "exec": [""]
+        "exec": [
+          ""
+        ]
       }
     }
   ]

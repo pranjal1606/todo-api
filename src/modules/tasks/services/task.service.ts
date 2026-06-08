@@ -8,16 +8,24 @@ import { AppError } from "../../../commons/AppError.js";
 
 const taskRepository = db.getRepository(Task);
 
+const checkUserExists = async (userId: number) => {
+  const user = await findUser({ id: userId });
+  if (!user || user.deletedAt) {
+    throw new AppError("User not found", 404);
+  }
+  return user;
+};
+
 // Interface for task payload inputs
 export interface TaskInput {
   title: string;
   description?: string;
   status?: "PENDING" | "IN_PROGRESS" | "COMPLETED";
   priority?: "LOW" | "MEDIUM" | "HIGH";
-  dueDate: Date;
-  reminderAt?: Date | null;
   categoryId: number;
   checklistItems?: { id?: number; title: string; isCompleted: boolean }[];
+  dueDate: Date;
+  reminderAt?: Date | null;
 }
 
 // Interface for paginated task querying and filtering
@@ -36,10 +44,7 @@ export interface TaskFilters {
 export const createTask = async (userId: number, taskData: TaskInput) => {
   try {
     // 1. Verify user exists
-    const user = await findUser({ id: userId });
-    if (!user || user.deletedAt) {
-      throw new AppError("User not found or deleted", 404);
-    }
+    await checkUserExists(userId);
 
     const { checklistItems, categoryId, ...rest } = taskData;
 
@@ -64,7 +69,7 @@ export const createTask = async (userId: number, taskData: TaskInput) => {
 
     const status = rest.status || "PENDING";
 
-    // Unified direct save using TypeORM cascade inserts
+    // Unified direct save using TypeORM cascade inserts. It automatically inserts checklist items.
     return await taskRepository.save({
       ...rest,
       status,
@@ -83,10 +88,7 @@ export const getTasksPaginated = async (
 ) => {
   try {
     // 1. Verify user exists
-    const user = await findUser({ id: userId });
-    if (!user || user.deletedAt) {
-      throw new AppError("User not found or deleted", 404);
-    }
+    await checkUserExists(userId);
 
     const {
       page = 1,
@@ -208,10 +210,7 @@ export const getTasksPaginated = async (
 export const getTaskByIdAndUser = async (taskId: number, userId: number) => {
   try {
     // 1. Verify user exists
-    const user = await findUser({ id: userId });
-    if (!user || user.deletedAt) {
-      throw new AppError("User not found or deleted", 404);
-    }
+    await checkUserExists(userId);
 
     return await taskRepository.findOne({
       where: { id: taskId, user: { id: userId } },
@@ -229,10 +228,7 @@ export const updateTask = async (
 ) => {
   try {
     // 1. Verify user exists
-    const user = await findUser({ id: userId });
-    if (!user || user.deletedAt) {
-      throw new AppError("User not found or deleted", 404);
-    }
+    await checkUserExists(userId);
 
     // 2. Verify task exists and belongs to the user
     const task = await taskRepository.findOne({
@@ -319,10 +315,7 @@ export const updateTask = async (
 export const deleteTask = async (taskId: number, userId: number) => {
   try {
     // 1. Verify user exists
-    const user = await findUser({ id: userId });
-    if (!user || user.deletedAt) {
-      throw new AppError("User not found or deleted", 404);
-    }
+    await checkUserExists(userId);
 
     // 2. Verify task exists and belongs to the user
     const task = await taskRepository.findOne({
