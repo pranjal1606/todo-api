@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import type { ObjectSchema } from "joi";
+import { StatusCodes } from "http-status-codes";
 import { AppError } from "../AppError.js";
 
 export const validation = (
@@ -18,7 +19,7 @@ export const validation = (
         .map((detail) => detail.message)
         .join(", ");
 
-      const appError = new AppError(errorMessage, 400);
+      const appError = new AppError(errorMessage, StatusCodes.BAD_REQUEST);
       appError.name = "ValidationError";
       return next(appError);
     }

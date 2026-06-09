@@ -1,6 +1,7 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import { StatusCodes } from "http-status-codes";
 import { AppError } from "../../commons/AppError.js";
 
 // Ensure uploads directory exists in process.cwd()
@@ -26,7 +27,13 @@ const fileFilter = (req: any, file: any, cb: any) => {
   if (allowedMimeTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new AppError("Only JPEG, PNG, and PDF files are allowed", 400), false);
+    cb(
+      new AppError(
+        "Only JPEG, PNG, and PDF files are allowed",
+        StatusCodes.BAD_REQUEST
+      ),
+      false
+    );
   }
 };
 

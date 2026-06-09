@@ -5,13 +5,14 @@ import { Brackets } from "typeorm";
 import { findUser } from "../../auth/services/user.service.js";
 import { getCategoryByIdAndUser } from "../../categories/category.service.js";
 import { AppError } from "../../../commons/AppError.js";
+import { StatusCodes } from "http-status-codes";
 
 const taskRepository = db.getRepository(Task);
 
 const checkUserExists = async (userId: number) => {
   const user = await findUser({ id: userId });
   if (!user || user.deletedAt) {
-    throw new AppError("User not found", 404);
+    throw new AppError("User not found", StatusCodes.NOT_FOUND);
   }
   return user;
 };
@@ -54,7 +55,7 @@ export const createTask = async (userId: number, taskData: TaskInput) => {
       if (!category) {
         throw new AppError(
           "Category not found or does not belong to the user",
-          400
+          StatusCodes.BAD_REQUEST
         );
       }
     }
@@ -236,7 +237,7 @@ export const updateTask = async (
       relations: { checklistItems: true, category: true, attachments: true },
     });
     if (!task) {
-      throw new AppError("Task not found", 404);
+      throw new AppError("Task not found", StatusCodes.NOT_FOUND);
     }
 
     const { checklistItems, categoryId, ...rest } = updateData;
@@ -248,7 +249,7 @@ export const updateTask = async (
         if (!category) {
           throw new AppError(
             "Category not found or does not belong to the user",
-            400
+            StatusCodes.BAD_REQUEST
           );
         }
         task.category = category;
@@ -264,7 +265,7 @@ export const updateTask = async (
         if (item.id && !existingIds.includes(item.id)) {
           throw new AppError(
             `Checklist item with ID ${item.id} does not belong to this task`,
-            400
+            StatusCodes.BAD_REQUEST
           );
         }
       }
@@ -273,9 +274,11 @@ export const updateTask = async (
       const incomingIds = checklistItems
         .map((item) => item.id)
         .filter((id): id is number => !!id);
-      const orphanIds = existingIds.filter((id) => !incomingIds.includes(id));
-      if (orphanIds.length > 0) {
-        await db.getRepository(ChecklistItem).delete(orphanIds);
+      const existingChecklistIds = existingIds.filter(
+        (id) => !incomingIds.includes(id)
+      );
+      if (existingChecklistIds.length > 0) {
+        await db.getRepository(ChecklistItem).delete(existingChecklistIds);
       }
 
       task.checklistItems = checklistItems.map((item) => {
@@ -322,7 +325,7 @@ export const deleteTask = async (taskId: number, userId: number) => {
       where: { id: taskId, user: { id: userId } },
     });
     if (!task) {
-      throw new AppError("Task not found", 404);
+      throw new AppError("Task not found", StatusCodes.NOT_FOUND);
     }
 
     await taskRepository.softDelete(taskId);
