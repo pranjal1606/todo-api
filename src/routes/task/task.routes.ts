@@ -27,14 +27,11 @@ router.delete("/:id", taskController.deleteTask);
 
 // Task attachments endpoints
 router.post(
-  "/:taskId/attachments",
+  "/:id/attachments",
   upload.single("file"),
   taskController.uploadAttachment
 );
-router.get(
-  "/:taskId/attachments/:attachmentId",
-  taskController.downloadAttachment
-);
+router.get("/:id/attachments/:attachmentId", taskController.downloadAttachment);
 router.delete(
   "/:taskId/attachments/:attachmentId",
   taskController.deleteAttachment
