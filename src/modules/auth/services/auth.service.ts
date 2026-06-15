@@ -35,8 +35,6 @@ export const generateJWT = (user: User) => {
     {
       id: user.id,
       email: user.email,
-      accessExp: JWT_ACCESS_EXPIRY,
-      refreshExp: JWT_REFRESH_EXPIRY,
     },
     JWT_ACCESS_SECRET,
     {
