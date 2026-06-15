@@ -2,16 +2,19 @@ import type { Store, Options, IncrementResponse } from "express-rate-limit";
 import { db } from "../../../config/database.js";
 
 // In-memory fallback map for emails/keys that do not exist in the database yet
-// Temporary backup storage
+// Temporary backup for users who haven't created an account yet
 const memoryStore = new Map<string, { hits: number; resetAt: Date }>();
 
 export class SqlStore implements Store {
   windowMs!: number;
 
+  // called automatically by express-rate-limit. Stores the window duration so the store knows how long to block for.
   init(options: Options) {
     this.windowMs = options.windowMs;
   }
 
+  // Called on every request. Increments the request count for the given key (email).
+  // Returns the number of hits and the time at which the rate limit window resets.
   async increment(key: string): Promise<IncrementResponse> {
     const now = new Date();
     const resetAt = new Date(Date.now() + this.windowMs);
@@ -52,6 +55,7 @@ export class SqlStore implements Store {
     return { totalHits: hits, resetTime: expiry };
   }
 
+  // Called when the rate limit window resets. Decrements the request count for the given key (email).
   async decrement(key: string): Promise<void> {
     const result = await db.query(
       `UPDATE "users" SET "requests" = GREATEST("requests" - 1, 0) WHERE "email" = $1`,
@@ -64,6 +68,7 @@ export class SqlStore implements Store {
     }
   }
 
+  // Resets the request count for the given key (email) and resetAt as NULL.
   async resetKey(key: string): Promise<void> {
     const result = await db.query(
       `UPDATE "users" SET "requests" = 0, "resetAt" = NULL WHERE "email" = $1`,
