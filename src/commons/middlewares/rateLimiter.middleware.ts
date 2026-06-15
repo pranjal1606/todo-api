@@ -1,6 +1,4 @@
 import rateLimit from "express-rate-limit";
-import { RedisStore } from "rate-limit-redis";
-import { redisClient } from "../../config/redis.js";
 
 // Global rate limiter to protect the application from DDoS and excessive requests
 export const globalRateLimiter = rateLimit({
@@ -13,12 +11,4 @@ export const globalRateLimiter = rateLimit({
   },
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-
-  // Persist rate limit counts in Redis (survives server restarts)
-  store: new RedisStore({
-    sendCommand: async (...args: string[]) => {
-      return await redisClient.sendCommand(args);
-    },
-    prefix: "rl:global:",
-  }),
 });

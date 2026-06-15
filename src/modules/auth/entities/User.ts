@@ -33,6 +33,12 @@ export class User {
   @Column({ type: "timestamp", nullable: true })
   otpExpiresAt!: Date | null;
 
+  @Column({ type: "integer", default: 0 })
+  requests!: number;
+
+  @Column({ type: "timestamp", nullable: true })
+  resetAt!: Date | null;
+
   @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user)
   refreshTokens!: RefreshToken[];
 

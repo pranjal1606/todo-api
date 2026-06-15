@@ -175,7 +175,6 @@ export const registerUser = async (
       Date.now() + parseTime(process.env.OTP_EXPIRY)
     );
 
-    let user;
     const userPayload = {
       name,
       email,
@@ -183,16 +182,15 @@ export const registerUser = async (
       isVerified: false,
       otp,
       otpExpiresAt,
+      ...(!existingUser && {
+        requests: 1,
+        resetAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours window
+      }),
     };
 
-    if (existingUser) {
-      user = await saveUserRecord({
-        ...existingUser,
-        ...userPayload,
-      });
-    } else {
-      user = await saveUserRecord(userPayload);
-    }
+    const user = await saveUserRecord(
+      existingUser ? { ...existingUser, ...userPayload } : userPayload
+    );
 
     await sendOTP(user.email, otp);
     return { user, isNewUser: !existingUser };
