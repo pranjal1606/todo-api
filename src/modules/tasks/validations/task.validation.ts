@@ -25,7 +25,7 @@ const baseTaskSchema = joi.object({
   description: joi.string().trim().max(1000).allow(null, ""),
   status,
   priority,
-  dueDate: joi.date().iso(),
+  dueDate: joi.date().iso().allow(null),
   reminderAt: joi.date().iso().allow(null),
   categoryId: joi.number().integer().positive(),
 });
@@ -34,9 +34,11 @@ const baseTaskSchema = joi.object({
 export const createTaskValidation = baseTaskSchema
   .fork(["title", "categoryId"], (schema) => schema.required())
   .fork(["dueDate"], (schema) =>
-    (schema as joi.DateSchema).required().min("now")
+    (schema as joi.DateSchema).optional().allow(null).min("now")
   )
-  .fork(["reminderAt"], (schema) => (schema as joi.DateSchema).min("now"))
+  .fork(["reminderAt"], (schema) =>
+    (schema as joi.DateSchema).optional().allow(null).min("now")
+  )
   .fork(["status"], (schema) => schema.default("PENDING"))
   .fork(["priority"], (schema) => schema.default("MEDIUM"))
   .keys({

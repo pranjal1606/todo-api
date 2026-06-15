@@ -25,7 +25,7 @@ export interface TaskInput {
   priority?: "LOW" | "MEDIUM" | "HIGH";
   categoryId: number;
   checklistItems?: { id?: number; title: string; isCompleted: boolean }[];
-  dueDate: Date;
+  dueDate?: Date | null;
   reminderAt?: Date | null;
 }
 
