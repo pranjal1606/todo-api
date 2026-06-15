@@ -3,6 +3,7 @@ import express from "express";
 import dotenv from "dotenv";
 import { errorHandler } from "./commons/middlewares/errorHandler.js";
 import { globalRateLimiter } from "./commons/middlewares/rateLimiter.middleware.js";
+import { sendResponse } from "./commons/response.js";
 
 import routes from "./routes/index.js";
 
@@ -15,7 +16,7 @@ app.use(express.json());
 app.use(globalRateLimiter);
 
 app.get("/", (req, res) => {
-  res.send("To-Do Management API is running");
+  sendResponse(res, 200, { message: "To-Do Management API is running" });
 });
 
 app.use("/", routes);

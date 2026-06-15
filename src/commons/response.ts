@@ -48,7 +48,9 @@ export const sendResponse = (
     meta?: any; // meta is for pagination and other meta data
   }
 ) => {
-  const responseBody: Record<string, any> = {};
+  const responseBody: Record<string, any> = {
+    statusCode,
+  };
 
   if (payload.message !== undefined) responseBody.message = payload.message;
   if (payload.data !== undefined) responseBody.data = stripDates(payload.data);
