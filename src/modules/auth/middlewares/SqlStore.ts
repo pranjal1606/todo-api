@@ -25,12 +25,12 @@ export class SqlStore implements Store {
       UPDATE "users"
       SET 
         "requests" = CASE 
-          WHEN "resetAt" IS NULL OR "resetAt" <= $2 THEN 1 
+          WHEN COALESCE("resetAt", "createdAt" + INTERVAL '24 hours') <= $2 THEN 1 
           ELSE "requests" + 1 
         END,
         "resetAt" = CASE 
-          WHEN "resetAt" IS NULL OR "resetAt" <= $2 THEN $3 
-          ELSE "resetAt" 
+          WHEN COALESCE("resetAt", "createdAt" + INTERVAL '24 hours') <= $2 THEN $3 
+          ELSE COALESCE("resetAt", "createdAt" + INTERVAL '24 hours') 
         END
       WHERE "email" = $1
       RETURNING "requests", "resetAt"

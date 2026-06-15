@@ -182,10 +182,6 @@ export const registerUser = async (
       isVerified: false,
       otp,
       otpExpiresAt,
-      ...(!existingUser && {
-        requests: 1,
-        resetAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours window
-      }),
     };
 
     const user = await saveUserRecord(
