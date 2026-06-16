@@ -6,6 +6,12 @@ import { findUser } from "../../auth/services/user.service.js";
 import { getCategoryByIdAndUser } from "../../categories/category.service.js";
 import { AppError } from "../../../commons/AppError.js";
 import { StatusCodes } from "http-status-codes";
+import {
+  createChecklistItem,
+  updateChecklistItem,
+  deleteChecklistItem,
+  getChecklistItems,
+} from "./checklist.service.js";
 
 const taskRepository = db.getRepository(Task);
 
@@ -270,37 +276,37 @@ export const updateTask = async (
         }
       }
 
-      // Explicitly delete orphaned checklist items not present in the update payload
+      // Explicitly delete orphaned checklist items using deleteChecklistItem
       const incomingIds = checklistItems
         .map((item) => item.id)
         .filter((id): id is number => !!id);
       const existingChecklistIds = existingIds.filter(
         (id) => !incomingIds.includes(id)
       );
-      if (existingChecklistIds.length > 0) {
-        await db.getRepository(ChecklistItem).delete(existingChecklistIds);
+      for (const checklistId of existingChecklistIds) {
+        await deleteChecklistItem(userId, taskId, checklistId);
       }
 
-      task.checklistItems = checklistItems.map((item) => {
+      // Create or update items using createChecklistItem and updateChecklistItem
+      for (const item of checklistItems) {
         if (item.id) {
-          const existing = task.checklistItems.find((ci) => ci.id === item.id);
-          return {
-            ...existing,
-            id: item.id,
+          await updateChecklistItem(userId, taskId, item.id, {
             title: item.title,
             isCompleted: item.isCompleted,
-          } as any;
+          });
         } else {
-          return {
-            title: item.title,
-            isCompleted: item.isCompleted || false,
-          } as any;
+          await createChecklistItem(userId, taskId, item.title);
         }
-      });
+      }
+
+      // Reload checklist items from the database to reflect the updates
+      task.checklistItems = await getChecklistItems(userId, taskId, "all");
 
       // Business Rule: Auto-mark completed if all items are ticked
-      if (checklistItems.length > 0) {
-        const allChecked = checklistItems.every((item) => item.isCompleted);
+      if (task.checklistItems.length > 0) {
+        const allChecked = task.checklistItems.every(
+          (item) => item.isCompleted
+        );
         if (allChecked) {
           task.status = "COMPLETED";
         }

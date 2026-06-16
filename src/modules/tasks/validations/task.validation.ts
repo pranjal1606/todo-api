@@ -1,9 +1,8 @@
 import joi from "joi";
+import { titleSchema } from "../../../commons/validations/common.validation.js";
 
 const ALLOWED_STATUSES = ["PENDING", "IN_PROGRESS", "COMPLETED"];
 const ALLOWED_PRIORITIES = ["LOW", "MEDIUM", "HIGH"];
-
-const titleSchema = joi.string().trim().min(3).max(255);
 const status = joi.string().valid(...ALLOWED_STATUSES);
 const priority = joi.string().valid(...ALLOWED_PRIORITIES);
 
@@ -33,10 +32,7 @@ const baseTaskSchema = joi.object({
 // Schema for creating a task (makes certain fields required and sets defaults)
 export const createTaskValidation = baseTaskSchema
   .fork(["title", "categoryId"], (schema) => schema.required())
-  .fork(["dueDate"], (schema) =>
-    (schema as joi.DateSchema).optional().allow(null).min("now")
-  )
-  .fork(["reminderAt"], (schema) =>
+  .fork(["dueDate", "reminderAt"], (schema) =>
     (schema as joi.DateSchema).optional().allow(null).min("now")
   )
   .fork(["status"], (schema) => schema.default("PENDING"))

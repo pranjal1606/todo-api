@@ -8,6 +8,7 @@ import {
   getTasksValidation,
 } from "../../modules/tasks/validations/task.validation.js";
 import { upload } from "../../modules/tasks/upload.middleware.js";
+import checklistRoutes from "./checklist.routes.js";
 
 const router = Router();
 
@@ -36,5 +37,8 @@ router.delete(
   "/:taskId/attachments/:attachmentId",
   taskController.deleteAttachment
 );
+
+// Task checklist endpoints
+router.use("/:taskId/checklist", checklistRoutes);
 
 export default router;

@@ -290,7 +290,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJpYXQiOjE3ODE1MDY4OTQsImV4cCI6MTc4MTUxMDQ5NH0.0gT8S36dsVsgGxuNpAdDM5JZfKaIsHCyYFED9WFxZY4",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJpYXQiOjE3ODE2MTI0MDMsImV4cCI6MTc4MTYxNjAwM30.RS5hgCBW0fSVZiEADWbmR6-by-TMx4OlCW7bNg3SRF4",
                   "type": "string"
                 }
               ]
@@ -539,6 +539,113 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "cheklists",
+      "item": [
+        {
+          "name": "create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Install dependencies\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/tasks/4/checklist",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["tasks", "4", "checklist"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Build API Endpoints\",\n  \"description\": \"Develop and document API routing structures.\",\n  \"dueDate\": \"2026-06-15T12:00:00.000Z\",\n  \"reminderAt\": \"2026-06-15T12:42:08+05:30\",\n  \"categoryId\": 1,\n  \"priority\": \"HIGH\",\n  \"checklistItems\": [\n    { \"title\": \"Make DB schema\" },\n    { \"title\": \"Implement routes\" }\n  ]\n}\n"
+            },
+            "url": {
+              "raw": "http://localhost:3000/tasks/3/checklist",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["tasks", "3", "checklist"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "pending",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Install dependency\",\n  \"isCompleted\": \"true\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/tasks/4/checklist/8",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["tasks", "4", "checklist", "8"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Install dependency\",\n  \"isCompleted\": \"true\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/tasks/4/checklist/8",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["tasks", "4", "checklist", "8"]
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ],
   "auth": {
@@ -546,7 +653,7 @@
     "bearer": [
       {
         "key": "token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJpYXQiOjE3ODE1MDY4OTQsImV4cCI6MTc4MTUxMDQ5NH0.0gT8S36dsVsgGxuNpAdDM5JZfKaIsHCyYFED9WFxZY4",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJpYXQiOjE3ODE2MTI0MDMsImV4cCI6MTc4MTYxNjAwM30.RS5hgCBW0fSVZiEADWbmR6-by-TMx4OlCW7bNg3SRF4",
         "type": "string"
       }
     ]
