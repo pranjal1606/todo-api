@@ -20,7 +20,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Pranju\",\n  \"email\": \"pranjalahir69@gmail.com\",\n  \"password\": \"Pranjal@123\" \n}",
+              "raw": "{\n  \"name\": \"Pranju\",\n  \"email\": \"chandravadiyapranjal@gmail.com\",\n  \"password\": \"Pranjal@123\" \n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -283,225 +283,18 @@
       "name": "task",
       "item": [
         {
-          "name": "filters",
-          "item": [
-            {
-              "name": "get  by id",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "http://localhost:3000/tasks/2",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "3000",
-                  "path": ["tasks", "2"]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "priority",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "http://localhost:3000/tasks?priority=HIGH",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "3000",
-                  "path": ["tasks"],
-                  "query": [
-                    {
-                      "key": "priority",
-                      "value": "HIGH"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "date",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "http://localhost:3000/tasks?dueDate=2026-06-10",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "3000",
-                  "path": ["tasks"],
-                  "query": [
-                    {
-                      "key": "dueDate",
-                      "value": "2026-06-10"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "due date",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "http://localhost:3000/tasks?hasDueDate=true",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "3000",
-                  "path": ["tasks"],
-                  "query": [
-                    {
-                      "key": "hasDueDate",
-                      "value": "true"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "search",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "http://localhost:3000/tasks?search=work",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "3000",
-                  "path": ["tasks"],
-                  "query": [
-                    {
-                      "key": "search",
-                      "value": "work"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "sort status",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "http://localhost:3000/tasks?sortBy=status&order=ASC",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "3000",
-                  "path": ["tasks"],
-                  "query": [
-                    {
-                      "key": "sortBy",
-                      "value": "status"
-                    },
-                    {
-                      "key": "order",
-                      "value": "ASC"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "page and limit",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "http://localhost:3000/tasks?limit=2&page=1",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "3000",
-                  "path": ["tasks"],
-                  "query": [
-                    {
-                      "key": "limit",
-                      "value": "2"
-                    },
-                    {
-                      "key": "page",
-                      "value": "1"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "has due date",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "http://localhost:3000/tasks?hasDueDate=false",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "3000",
-                  "path": ["tasks"],
-                  "query": [
-                    {
-                      "key": "hasDueDate",
-                      "value": "false"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "sort priority",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "http://localhost:3000/tasks?sortBy=priority",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "3000",
-                  "path": ["tasks"],
-                  "query": [
-                    {
-                      "key": "sortBy",
-                      "value": "priority"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "sort due date",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "http://localhost:3000/tasks?sortBy=dueDate",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "3000",
-                  "path": ["tasks"],
-                  "query": [
-                    {
-                      "key": "sortBy",
-                      "value": "dueDate"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            }
-          ]
-        },
-        {
           "name": "create task",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJpYXQiOjE3ODE1MDY4OTQsImV4cCI6MTc4MTUxMDQ5NH0.0gT8S36dsVsgGxuNpAdDM5JZfKaIsHCyYFED9WFxZY4",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [
               {
@@ -512,7 +305,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"title\": \"Build API Endpoints\",\n  \"description\": \"Develop and document API routing structures.\",\n  \"dueDate\": \"2026-06-10T12:00:00.000Z\",\n  \"reminderAt\": \"2026-06-09T12:00:00.000Z\",\n  \"categoryId\": 1,\n  \"priority\": \"HIGH\",\n  \"checklistItems\": [\n    { \"title\": \"Make DB schema\" },\n    { \"title\": \"Implement routes\" }\n  ]\n}\n",
+              "raw": "{\n  \"title\": \"Build API Endpoints\",\n  \"description\": \"Develop and document API routing structures.\",\n  \"dueDate\": \"2026-06-15T12:00:00.000Z\",\n  \"reminderAt\": \"2026-06-15T12:42:08+05:30\",\n  \"categoryId\": 1,\n  \"priority\": \"HIGH\",\n  \"checklistItems\": [\n    { \"title\": \"Make DB schema\" },\n    { \"title\": \"Implement routes\" }\n  ]\n}\n",
               "options": {
                 "raw": {
                   "language": "json"
@@ -566,7 +359,65 @@
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["tasks"]
+              "path": ["tasks"],
+              "query": [
+                {
+                  "key": "priority",
+                  "value": "HIGH",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "dueDate",
+                  "value": "2026-06-10",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "hasDueDate",
+                  "value": "true",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "work",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "status",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "ASC",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "2",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "priority",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "dueDate",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
             }
           },
           "response": []
@@ -607,6 +458,21 @@
               "host": ["localhost"],
               "port": "3000",
               "path": ["tasks", "1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get  by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/tasks/2",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["tasks", "2"]
             }
           },
           "response": []
@@ -680,7 +546,7 @@
     "bearer": [
       {
         "key": "token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJhY2Nlc3NFeHAiOiIxaCIsInJlZnJlc2hFeHAiOiI3ZCIsImlhdCI6MTc4MDkxMzc4NiwiZXhwIjoxNzgwOTE3Mzg2fQ.gMdV_4i1Ha7pUBNB7RF06srLCJX5s_qXD5MANTgtoZg",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJpYXQiOjE3ODE1MDY4OTQsImV4cCI6MTc4MTUxMDQ5NH0.0gT8S36dsVsgGxuNpAdDM5JZfKaIsHCyYFED9WFxZY4",
         "type": "string"
       }
     ]
