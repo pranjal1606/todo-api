@@ -45,7 +45,7 @@ export const sendResponse = (
   payload: {
     message?: string;
     data?: any;
-    meta?: any; // meta is for pagination and other meta data
+    pagination?: any;
   }
 ) => {
   const responseBody: Record<string, any> = {
@@ -54,7 +54,8 @@ export const sendResponse = (
 
   if (payload.message !== undefined) responseBody.message = payload.message;
   if (payload.data !== undefined) responseBody.data = stripDates(payload.data);
-  if (payload.meta !== undefined) responseBody.meta = payload.meta;
+  if (payload.pagination !== undefined)
+    responseBody.pagination = payload.pagination;
 
   return res.status(statusCode).json(responseBody);
 };

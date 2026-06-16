@@ -196,7 +196,7 @@ export const getTasksPaginated = async (
 
     return {
       tasks,
-      meta: {
+      pagination: {
         total,
         page: parsedPage,
         limit: parsedLimit,

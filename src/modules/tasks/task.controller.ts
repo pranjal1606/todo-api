@@ -31,14 +31,14 @@ export const getTasks = async (
 ) => {
   try {
     const userId = req.user!.id;
-    const { tasks, meta } = await taskService.getTasksPaginated(
+    const { tasks, pagination } = await taskService.getTasksPaginated(
       userId,
       req.query
     );
 
     sendResponse(res, StatusCodes.OK, {
       data: tasks,
-      meta,
+      pagination,
     });
   } catch (error) {
     next(error);

@@ -6,7 +6,7 @@ import { LessThanOrEqual, Not } from "typeorm";
 export const startReminderJob = () => {
   console.log("Background Task reminder job scheduler started.");
 
-  setInterval(async () => {
+  const runJob = async () => {
     try {
       const taskRepository = db.getRepository(Task);
       const now = new Date();
@@ -21,33 +21,34 @@ export const startReminderJob = () => {
         relations: {
           user: true,
         },
+        take: 100,
       });
 
-      for (const task of pendingReminders) {
-        if (task.user && task.user.email) {
+      await Promise.all(
+        pendingReminders.map(async (task) => {
+          const email = task.user?.email;
+          if (!email) return;
           try {
             await sendTaskReminder(
-              task.user.email,
+              email,
               task.title,
               task.dueDate || new Date()
             );
-
-            // Mark reminder as sent to avoid double execution
             task.reminderSent = true;
             await taskRepository.save(task);
-            console.log(
-              `Reminder email sent to ${task.user.email} for task ID: ${task.id}`
-            );
-          } catch (emailError) {
-            console.error(
-              `Error sending reminder email for task ID ${task.id}:`,
-              emailError
-            );
+          } catch (err) {
+            console.error(`Reminder failed for task ${task.id}:`, err);
           }
-        }
-      }
+        })
+      );
     } catch (error) {
       console.error("Error in reminder job poller:", error);
+    } finally {
+      // Schedule the next check 60 seconds after the current run completes
+      setTimeout(runJob, 60000);
     }
-  }, 60000); // Check every 60 seconds
+  };
+
+  // Trigger the first execution
+  setTimeout(runJob, 60000);
 };
