@@ -5,6 +5,29 @@ import { AppError } from "../../commons/AppError.js";
 import { sendResponse } from "../../commons/response.js";
 
 /**
+ * Helper to extract and validate userId and taskId from the request
+ */
+const getRequestAuthAndTask = (req: Request) => {
+  const userId = req.user!.id;
+  const taskId = Number(req.params.taskId || req.params.id);
+
+  if (isNaN(taskId)) {
+    throw new AppError("Invalid task ID", StatusCodes.BAD_REQUEST);
+  }
+
+  return { userId, taskId };
+};
+
+/**
+ * Helper to format a checklist item.
+ */
+const formatChecklistItem = (item: any) => ({
+  id: item.id,
+  title: item.title,
+  isCompleted: item.isCompleted,
+});
+
+/**
  * Get checklist items for a task
  */
 export const getChecklistItems = async (
@@ -13,13 +36,7 @@ export const getChecklistItems = async (
   next: NextFunction
 ) => {
   try {
-    const userId = req.user!.id;
-    const taskId = parseInt((req.params.id || req.params.taskId) as string, 10);
-
-    if (isNaN(taskId)) {
-      throw new AppError("Invalid task ID", StatusCodes.BAD_REQUEST);
-    }
-
+    const { userId, taskId } = getRequestAuthAndTask(req);
     const status = (req.query.status as any) || "all";
     const items = await checklistService.getChecklistItems(
       userId,
@@ -28,7 +45,7 @@ export const getChecklistItems = async (
     );
 
     sendResponse(res, StatusCodes.OK, {
-      data: items,
+      data: items.map(formatChecklistItem),
     });
   } catch (error) {
     next(error);
@@ -44,13 +61,7 @@ export const createChecklistItem = async (
   next: NextFunction
 ) => {
   try {
-    const userId = req.user!.id;
-    const taskId = parseInt((req.params.id || req.params.taskId) as string, 10);
-
-    if (isNaN(taskId)) {
-      throw new AppError("Invalid task ID", StatusCodes.BAD_REQUEST);
-    }
-
+    const { userId, taskId } = getRequestAuthAndTask(req);
     const { title } = req.body;
     const item = await checklistService.createChecklistItem(
       userId,
@@ -59,7 +70,7 @@ export const createChecklistItem = async (
     );
 
     sendResponse(res, StatusCodes.CREATED, {
-      data: item,
+      data: formatChecklistItem(item),
     });
   } catch (error) {
     next(error);
@@ -75,12 +86,11 @@ export const updateChecklistItem = async (
   next: NextFunction
 ) => {
   try {
-    const userId = req.user!.id;
-    const taskId = parseInt(req.params.taskId as string, 10);
-    const checklistId = parseInt(req.params.checklistId as string, 10);
+    const { userId, taskId } = getRequestAuthAndTask(req);
+    const checklistId = Number(req.params.checklistId);
 
-    if (isNaN(taskId) || isNaN(checklistId)) {
-      throw new AppError("Invalid IDs provided", StatusCodes.BAD_REQUEST);
+    if (isNaN(checklistId)) {
+      throw new AppError("Invalid checklist ID", StatusCodes.BAD_REQUEST);
     }
 
     const updatedItem = await checklistService.updateChecklistItem(
@@ -91,7 +101,7 @@ export const updateChecklistItem = async (
     );
 
     sendResponse(res, StatusCodes.OK, {
-      data: updatedItem,
+      data: formatChecklistItem(updatedItem),
     });
   } catch (error) {
     next(error);
@@ -107,12 +117,11 @@ export const deleteChecklistItem = async (
   next: NextFunction
 ) => {
   try {
-    const userId = req.user!.id;
-    const taskId = parseInt(req.params.taskId as string, 10);
-    const checklistId = parseInt(req.params.checklistId as string, 10);
+    const { userId, taskId } = getRequestAuthAndTask(req);
+    const checklistId = Number(req.params.checklistId);
 
-    if (isNaN(taskId) || isNaN(checklistId)) {
-      throw new AppError("Invalid IDs provided", StatusCodes.BAD_REQUEST);
+    if (isNaN(checklistId)) {
+      throw new AppError("Invalid checklist ID", StatusCodes.BAD_REQUEST);
     }
 
     await checklistService.deleteChecklistItem(userId, taskId, checklistId);
