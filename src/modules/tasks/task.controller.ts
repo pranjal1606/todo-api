@@ -124,7 +124,7 @@ export const uploadAttachment = async (
 ) => {
   try {
     const userId = req.user!.id;
-    const taskId = parseInt(req.params.id as string, 10);
+    const taskId = Number(req.params.taskId);
 
     if (isNaN(taskId)) {
       if (req.file && fs.existsSync(req.file.path)) {
@@ -178,8 +178,8 @@ export const deleteAttachment = async (
 ) => {
   try {
     const userId = req.user!.id;
-    const taskId = parseInt(req.params.taskId as string, 10);
-    const attachmentId = parseInt(req.params.attachmentId as string, 10);
+    const taskId = Number(req.params.taskId);
+    const attachmentId = Number(req.params.attachmentId);
 
     if (isNaN(taskId) || isNaN(attachmentId)) {
       throw new AppError("Invalid IDs", StatusCodes.BAD_REQUEST);
@@ -223,8 +223,8 @@ export const downloadAttachment = async (
 ) => {
   try {
     const userId = req.user!.id;
-    const taskId = parseInt(req.params.taskId as string, 10);
-    const attachmentId = parseInt(req.params.attachmentId as string, 10);
+    const taskId = Number(req.params.taskId);
+    const attachmentId = Number(req.params.attachmentId);
 
     if (isNaN(taskId) || isNaN(attachmentId)) {
       throw new AppError("Invalid IDs", StatusCodes.BAD_REQUEST);
