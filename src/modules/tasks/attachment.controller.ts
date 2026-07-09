@@ -105,7 +105,7 @@ export const deleteAttachment = async (
     );
 
     sendResponse(res, StatusCodes.OK, {
-      data: updatedTask,
+      message: "Attachment deleted successfully",
     });
   } catch (error) {
     next(error);
