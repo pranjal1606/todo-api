@@ -1,37 +1,34 @@
 import multer from "multer";
 import path from "path";
-import fs from "fs";
+import crypto from "crypto";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../../commons/AppError.js";
 
-// Ensure uploads directory exists in process.cwd()
 const uploadDir = path.join(process.cwd(), "uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
 
+// File storing and renaming rules
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
+  destination: uploadDir, // Multer automatically ensures this directory exists and if not creates one.
   filename: (req, file, cb) => {
-    // Generate safe unique filename
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    // Generate safe unique filename using UUID
+    const uniqueSuffix = crypto.randomUUID();
     const ext = path.extname(file.originalname);
     cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
   },
 });
 
-const fileFilter = (req: any, file: any, cb: any) => {
-  const allowedMimeTypes = ["image/jpeg", "image/png", "application/pdf"];
-  const allowedExtensions = [".jpg", ".jpeg", ".png", ".pdf"];
+const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "application/pdf"];
+const ALLOWED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".pdf"];
 
+const fileFilter = (req: any, file: any, cb: any) => {
   const ext = path.extname(file.originalname).toLowerCase();
 
   if (
-    allowedMimeTypes.includes(file.mimetype) &&
-    allowedExtensions.includes(ext)
+    ALLOWED_MIME_TYPES.includes(file.mimetype) &&
+    ALLOWED_EXTENSIONS.includes(ext)
   ) {
+    // null - no error
+    // true - accept the file
     cb(null, true);
   } else {
     cb(

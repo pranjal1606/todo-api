@@ -7,7 +7,7 @@ import {
   updateTaskValidation,
   getTasksValidation,
 } from "../../modules/tasks/validations/task.validation.js";
-import { upload } from "../../modules/tasks/upload.middleware.js";
+import attachmentRoutes from "./attachment.routes.js";
 import checklistRoutes from "./checklist.routes.js";
 
 const router = Router();
@@ -27,19 +27,7 @@ router.put("/:id", validation(updateTaskValidation), taskController.updateTask);
 router.delete("/:id", taskController.deleteTask);
 
 // Task attachments endpoints
-router.post(
-  "/:taskId/attachments",
-  upload.single("file"),
-  taskController.uploadAttachment
-);
-router.get(
-  "/:taskId/attachments/:attachmentId",
-  taskController.downloadAttachment
-);
-router.delete(
-  "/:taskId/attachments/:attachmentId",
-  taskController.deleteAttachment
-);
+router.use("/:taskId/attachments", attachmentRoutes);
 
 // Task checklist endpoints
 router.use("/:taskId/checklist", checklistRoutes);
