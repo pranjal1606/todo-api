@@ -81,7 +81,10 @@ export const downloadAttachment = async (
     );
 
     if (!fs.existsSync(attachment.path)) {
-      throw new AppError("Attachment not found on server disk", StatusCodes.NOT_FOUND);
+      throw new AppError(
+        "Attachment not found on server disk",
+        StatusCodes.NOT_FOUND
+      );
     }
 
     res.sendFile(attachment.path);
