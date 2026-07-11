@@ -119,7 +119,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJpYXQiOjE3ODAzMTY5ODIsImV4cCI6MTc4MDkyMTc4Mn0.4Vj7f7MxJQUQACGKVfXwMKfkfV6cW8LBTGf4OCq28FA\"\n}\n",
+              "raw": "{\n  \"refreshToken\": \"\"\n}\n",
               "options": {
                 "raw": {
                   "language": "json"
@@ -290,7 +290,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJpYXQiOjE3ODE2MTI0MDMsImV4cCI6MTc4MTYxNjAwM30.RS5hgCBW0fSVZiEADWbmR6-by-TMx4OlCW7bNg3SRF4",
+                  "value": "{{auth_secret_0phg}}",
                   "type": "string"
                 }
               ]
@@ -304,13 +304,51 @@
               }
             ],
             "body": {
-              "mode": "raw",
-              "raw": "{\n  \"title\": \"Build API Endpoints\",\n  \"description\": \"Develop and document API routing structures.\",\n  \"dueDate\": \"2026-06-15T12:00:00.000Z\",\n  \"reminderAt\": \"2026-06-15T12:42:08+05:30\",\n  \"categoryId\": 1,\n  \"priority\": \"HIGH\",\n  \"checklistItems\": [\n    { \"title\": \"Make DB schema\" },\n    { \"title\": \"Implement routes\" }\n  ]\n}\n",
-              "options": {
-                "raw": {
-                  "language": "json"
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Build API Endpoints",
+                  "description": "Title of the task (Required)",
+                  "type": "text",
+                  "uuid": "1021721c-89bd-469a-a1a9-19a4215a10d1"
+                },
+                {
+                  "key": "categoryId",
+                  "value": "5",
+                  "description": "Category ID associated with the task (Required)",
+                  "type": "text",
+                  "uuid": "c5373edf-5fb2-441f-aa86-8ea2202e0cd5"
+                },
+                {
+                  "key": "description",
+                  "value": "Develop routing structures.",
+                  "description": "Description (Optional)",
+                  "type": "text",
+                  "uuid": "047cfd94-6827-4ff9-8297-670bf87b382e"
+                },
+                {
+                  "key": "priority",
+                  "value": "HIGH",
+                  "description": "LOW, MEDIUM, or HIGH",
+                  "type": "text",
+                  "uuid": "0a4bcd05-bff9-4085-867a-60597c0a2bff"
+                },
+                {
+                  "key": "checklistItems",
+                  "value": "[{\"title\": \"Make DB Schema\"}, {\"title\": \"Test routes\"}]",
+                  "description": "JSON stringified array of checklist items (Optional)",
+                  "type": "text",
+                  "uuid": "9190bef9-ae9d-4e89-832d-8079eb08ccd6"
+                },
+                {
+                  "key": "files",
+                  "description": "Actual files to upload as attachments (Optional)",
+                  "type": "file",
+                  "uuid": "f74adc90-4946-4cb9-b50f-c15bd2e1552d",
+                  "src": "/Users/pranjalahir/Downloads/6kb.jpg"
                 }
-              }
+              ]
             },
             "url": {
               "raw": "http://localhost:3000/tasks",
@@ -333,7 +371,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJhY2Nlc3NFeHAiOiIxaCIsInJlZnJlc2hFeHAiOiI3ZCIsImlhdCI6MTc4MDY2Mjc2MywiZXhwIjoxNzgwNjY2MzYzfQ.4kVZem-dcKkjt9ACmJykUKtxLlN43PYLBaByS5m_yLY",
+                  "value": "{{json_web_token_0ox3}}",
                   "type": "string"
                 }
               ]
@@ -342,7 +380,7 @@
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJhY2Nlc3NFeHAiOiIxaCIsInJlZnJlc2hFeHAiOiI3ZCIsImlhdCI6MTc4MDY2Mjc2MywiZXhwIjoxNzgwNjY2MzYzfQ.4kVZem-dcKkjt9ACmJykUKtxLlN43PYLBaByS5m_yLY"
+                "value": "Bearer {{json_web_token_0ox3}}"
               }
             ],
             "body": {
@@ -465,14 +503,24 @@
         {
           "name": "get  by id",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{json_web_token_0j05}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/tasks/2",
+              "raw": "http://localhost:3000/tasks/11",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["tasks", "2"]
+              "path": ["tasks", "11"]
             }
           },
           "response": []
@@ -485,6 +533,16 @@
         {
           "name": "upload file",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{json_web_token_0neg}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [],
             "body": {
@@ -494,16 +552,16 @@
                   "key": "file",
                   "type": "file",
                   "uuid": "d7a2d55e-eca8-4d7a-b470-a255d085e98e",
-                  "value": null
+                  "src": "/Users/pranjalahir/Downloads/Pranjal - Resume.pdf"
                 }
               ]
             },
             "url": {
-              "raw": "http://localhost:3000/tasks/2/attachments",
+              "raw": "http://localhost:3000/tasks/3/attachments",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["tasks", "2", "attachments"]
+              "path": ["tasks", "3", "attachments"]
             }
           },
           "response": []
@@ -511,14 +569,24 @@
         {
           "name": "get file",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_secret_0j05}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/tasks/2/attachments/1",
+              "raw": "http://localhost:3000/tasks/7/attachments/3",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["tasks", "2", "attachments", "1"]
+              "path": ["tasks", "7", "attachments", "3"]
             }
           },
           "response": []
@@ -526,14 +594,24 @@
         {
           "name": "delete file",
           "request": {
-            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_secret_0phg}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/tasks/2/attachments/1",
+              "raw": "http://localhost:3000/tasks/6/attachments/2",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["tasks", "2", "attachments", "1"]
+              "path": ["tasks", "6", "attachments", "2"]
             }
           },
           "response": []
@@ -653,7 +731,7 @@
     "bearer": [
       {
         "key": "token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJjaGFuZHJhdmFkaXlhcHJhbmphbEBnbWFpbC5jb20iLCJpYXQiOjE3ODE2MTI0MDMsImV4cCI6MTc4MTYxNjAwM30.RS5hgCBW0fSVZiEADWbmR6-by-TMx4OlCW7bNg3SRF4",
+        "value": "{{auth_secret_0neg}}",
         "type": "string"
       }
     ]
@@ -676,6 +754,40 @@
         "requests": {},
         "exec": [""]
       }
+    }
+  ],
+  "variable": [
+    {
+      "key": "auth_secret_0neg",
+      "secret": true
+    },
+    {
+      "key": "auth_secret_0phg",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0ox3",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_1arl",
+      "secret": true
+    },
+    {
+      "key": "bearer_token_1by0",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0j05",
+      "secret": true
+    },
+    {
+      "key": "auth_secret_0j05",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0neg",
+      "secret": true
     }
   ]
 }

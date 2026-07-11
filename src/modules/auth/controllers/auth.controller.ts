@@ -10,6 +10,7 @@ import {
   revokeRefreshToken,
 } from "../services/auth.service.js";
 import { findUser } from "../services/user.service.js";
+import { logUserActivity } from "../../activity_logs/services/activity.service.js";
 
 export const register = async (
   req: Request,
@@ -19,6 +20,13 @@ export const register = async (
   try {
     const { name, email, password } = req.body;
     const { user, isNewUser } = await registerUser(name, email, password);
+
+    logUserActivity(req, {
+      userId: user.id,
+      action: isNewUser ? "USER_REGISTER" : "USER_OTP_RESEND",
+      entityType: "User",
+      entityId: user.id,
+    });
 
     sendResponse(res, isNewUser ? StatusCodes.CREATED : StatusCodes.OK, {
       message: isNewUser
@@ -39,6 +47,16 @@ export const verifyOTP = async (
     const { email, otp } = req.body;
     await verifyUserOTP(email, otp);
 
+    const user = await findUser({ email });
+    if (user) {
+      logUserActivity(req, {
+        userId: user.id,
+        action: "USER_VERIFY_OTP",
+        entityType: "User",
+        entityId: user.id,
+      });
+    }
+
     sendResponse(res, StatusCodes.OK, {
       message: "Account verified successfully. You can now log in.",
     });
@@ -58,6 +76,14 @@ export const login = async (
       email,
       password
     );
+
+    logUserActivity(req, {
+      userId: user.id,
+      action: "USER_LOGIN",
+      entityType: "User",
+      entityId: user.id,
+      details: { email: user.email },
+    });
 
     sendResponse(res, StatusCodes.OK, {
       message: "Login successful",
@@ -106,7 +132,16 @@ export const logout = async (
 ) => {
   try {
     const { refreshToken } = req.body;
-    await revokeRefreshToken(refreshToken);
+    const user = await revokeRefreshToken(refreshToken);
+
+    if (user) {
+      logUserActivity(req, {
+        userId: user.id,
+        action: "USER_LOGOUT",
+        entityType: "User",
+        entityId: user.id,
+      });
+    }
 
     sendResponse(res, StatusCodes.OK, {
       message: "Logged out successfully",

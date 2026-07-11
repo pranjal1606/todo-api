@@ -3,6 +3,10 @@ import { StatusCodes } from "http-status-codes";
 import * as categoryService from "./category.service.js";
 import { AppError } from "../../commons/AppError.js";
 import { sendResponse } from "../../commons/response.js";
+import {
+  logUserActivity,
+  computeDiff,
+} from "../activity_logs/services/activity.service.js";
 
 export const createCategory = async (
   req: Request,
@@ -25,6 +29,15 @@ export const createCategory = async (
     }
 
     const category = await categoryService.createCategory(userId, name);
+
+    logUserActivity(req, {
+      userId,
+      action: "CATEGORY_CREATE",
+      entityType: "Category",
+      entityId: category.id,
+      details: { name: category.name },
+    });
+
     sendResponse(res, StatusCodes.CREATED, {
       data: category,
     });
@@ -86,8 +99,18 @@ export const updateCategory = async (
       }
     }
 
+    const oldCategory = { ...category };
     const updatedCategory = await categoryService.updateCategory(category, {
       name,
+    });
+    const changes = computeDiff(oldCategory, updatedCategory);
+
+    logUserActivity(req, {
+      userId,
+      action: "CATEGORY_UPDATE",
+      entityType: "Category",
+      entityId: categoryId,
+      details: { changes },
     });
 
     sendResponse(res, StatusCodes.OK, {
@@ -128,6 +151,14 @@ export const deleteCategory = async (
     }
 
     await categoryService.deleteCategory(category.id);
+
+    logUserActivity(req, {
+      userId,
+      action: "CATEGORY_DELETE",
+      entityType: "Category",
+      entityId: categoryId,
+      details: { name: category.name },
+    });
 
     sendResponse(res, StatusCodes.OK, {
       message: "Category deleted successfully",

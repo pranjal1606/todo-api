@@ -3,6 +3,12 @@ import { StatusCodes } from "http-status-codes";
 import * as checklistService from "./services/checklist.service.js";
 import { AppError } from "../../commons/AppError.js";
 import { sendResponse } from "../../commons/response.js";
+import { db } from "../../config/database.js";
+import { ChecklistItem } from "./entities/ChecklistItem.js";
+import {
+  logUserActivity,
+  computeDiff,
+} from "../activity_logs/services/activity.service.js";
 
 /**
  * Helper to extract and validate userId and taskId from the request
@@ -69,6 +75,14 @@ export const createChecklistItem = async (
       title
     );
 
+    logUserActivity(req, {
+      userId,
+      action: "CHECKLIST_ITEM_CREATE",
+      entityType: "ChecklistItem",
+      entityId: item.id,
+      details: { title: item.title, taskId },
+    });
+
     sendResponse(res, StatusCodes.CREATED, {
       data: formatChecklistItem(item),
     });
@@ -93,12 +107,27 @@ export const updateChecklistItem = async (
       throw new AppError("Invalid checklist ID", StatusCodes.BAD_REQUEST);
     }
 
+    const oldItem = await db.getRepository(ChecklistItem).findOne({
+      where: { id: checklistId, task: { id: taskId } },
+    });
+
     const updatedItem = await checklistService.updateChecklistItem(
       userId,
       taskId,
       checklistId,
       req.body
     );
+
+    if (oldItem) {
+      const changes = computeDiff(oldItem, updatedItem);
+      logUserActivity(req, {
+        userId,
+        action: "CHECKLIST_ITEM_UPDATE",
+        entityType: "ChecklistItem",
+        entityId: checklistId,
+        details: { changes, taskId },
+      });
+    }
 
     sendResponse(res, StatusCodes.OK, {
       data: formatChecklistItem(updatedItem),
@@ -124,7 +153,21 @@ export const deleteChecklistItem = async (
       throw new AppError("Invalid checklist ID", StatusCodes.BAD_REQUEST);
     }
 
+    const item = await db.getRepository(ChecklistItem).findOne({
+      where: { id: checklistId, task: { id: taskId } },
+    });
+
     await checklistService.deleteChecklistItem(userId, taskId, checklistId);
+
+    if (item) {
+      logUserActivity(req, {
+        userId,
+        action: "CHECKLIST_ITEM_DELETE",
+        entityType: "ChecklistItem",
+        entityId: checklistId,
+        details: { title: item.title, taskId },
+      });
+    }
 
     sendResponse(res, StatusCodes.OK, {
       message: "Checklist item deleted successfully",

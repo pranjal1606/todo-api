@@ -146,12 +146,14 @@ export const revokeRefreshToken = async (refreshToken: string) => {
     const tokenHash = hashToken(refreshToken);
     const record = await refreshTokenRepository.findOne({
       where: { token_hash: tokenHash },
+      relations: { user: true },
     });
 
     if (record && !record.revoked_at) {
       record.revoked_at = new Date();
       await refreshTokenRepository.save(record);
     }
+    return record ? record.user : null;
   } catch (error) {
     throw error;
   }

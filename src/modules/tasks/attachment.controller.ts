@@ -4,6 +4,7 @@ import * as attachmentService from "./services/attachment.service.js";
 import { AppError } from "../../commons/AppError.js";
 import { sendResponse } from "../../commons/response.js";
 import fs from "fs";
+import { logUserActivity } from "../activity_logs/services/activity.service.js";
 
 const getValidatedTaskParams = (req: Request) => {
   const userId = req.user!.id;
@@ -51,7 +52,21 @@ export const uploadAttachment = async (
       }
     );
 
+    // Find the uploaded attachment in updatedTask to log its details and ID
+    const attachment = updatedTask.attachments?.find(
+      (a: any) => a.filename === req.file.filename
+    );
+
+    logUserActivity(req, {
+      userId,
+      action: "ATTACHMENT_UPLOAD",
+      entityType: "Attachment",
+      entityId: attachment?.id || null,
+      details: { filename: req.file.filename, taskId },
+    });
+
     sendResponse(res, StatusCodes.OK, {
+      message: "Attachment uploaded successfully",
       data: updatedTask,
     });
   } catch (error) {
@@ -80,14 +95,9 @@ export const downloadAttachment = async (
       attachmentId
     );
 
-    if (!fs.existsSync(attachment.path)) {
-      throw new AppError(
-        "Attachment not found on server disk",
-        StatusCodes.NOT_FOUND
-      );
-    }
-
-    res.sendFile(attachment.path);
+    sendResponse(res, StatusCodes.OK, {
+      data: attachment,
+    });
   } catch (error) {
     next(error);
   }
@@ -101,11 +111,26 @@ export const deleteAttachment = async (
   try {
     const { userId, taskId, attachmentId } = getValidatedAttachmentParams(req);
 
+    // Fetch details of attachment prior to soft deletion
+    const attachment = await attachmentService.getAttachmentById(
+      userId,
+      taskId,
+      attachmentId
+    );
+
     const updatedTask = await attachmentService.deleteAttachment(
       userId,
       taskId,
       attachmentId
     );
+
+    logUserActivity(req, {
+      userId,
+      action: "ATTACHMENT_DELETE",
+      entityType: "Attachment",
+      entityId: attachmentId,
+      details: { filename: attachment.filename, taskId },
+    });
 
     sendResponse(res, StatusCodes.OK, {
       message: "Attachment deleted successfully",

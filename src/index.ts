@@ -7,10 +7,13 @@ import { sendResponse } from "./commons/response.js";
 
 import routes from "./routes/index.js";
 
+import path from "path";
+
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.use("/files", express.static(path.join(process.cwd(), "uploads")));
 
 // Apply the global rate limiter to all requests
 app.use(globalRateLimiter);
