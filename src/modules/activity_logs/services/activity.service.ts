@@ -41,10 +41,12 @@ export const logActivity = async (params: FullLogActivityParams) => {
  */
 export const computeDiff = (oldObj: any, newObj: any) => {
   const changes: Record<string, { old: any; new: any }> = {};
+
+  // If either object is missing, return empty changes immediately.
   if (!oldObj || !newObj) return changes;
 
   // Combine keys of both objects
-  // It creates a combined Set of all property names present in either of the two objects.
+  // It creates a combined Set of all property names present in either of the two objects with no duplicates.
   const keys = new Set([...Object.keys(oldObj), ...Object.keys(newObj)]);
 
   // Exclude system fields, sensitive info, and relations from diff calculation
@@ -79,6 +81,7 @@ export const computeDiff = (oldObj: any, newObj: any) => {
 
     // It skips nested objects, arrays, and functions (focusing only on simple datatypes like strings, numbers, booleans, and dates).
     // Ignore nested custom objects/relations that are not Date instances
+    // only log simple text/number fields.
     const isOldObj =
       oldVal && typeof oldVal === "object" && !(oldVal instanceof Date);
     const isNewObj =
